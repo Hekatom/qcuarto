@@ -1,0 +1,583 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}{{postroom.title}} - Qcuarto{% endblock %}
+{% block content %}
+
+<section class="container ">
+		{% if user.id == postroom.author.id %}
+		<div class="row">
+			<div class="col offset-4 offset-md-9">
+				<p>
+					<a href="{% url 'room_update' postroom.id %}" class="btn btn-warning my-2"><i class="fas fa-feather"></i> Editar </a>
+				</p>
+			</div><!--col-->
+	</div><!--row-->
+		{% endif %}
+	<div class="row">
+			<div class="col">
+				<h1>{{postroom.title}}</h1>
+			</div>
+			<!-- FAVORITOS (SI NO ESTÁ EN FAVORITOS, ES i class="far fa-heart", SI SÍ ESTÁ EN FAVORITOS ES i class="fas fa-heart") -->
+                        {% if user.is_authenticated %}
+						{% if postroom in roomfav %}
+						
+						<div class="icontext">
+                                <a onClick="return confirm('¿Estás seguro de eliminar este favorito?'); window.location.reload();" href="{% url 'room_removefav' userid=user.id roomid=postroom.id%}?next={{ request.build_absolute_uri }}" class="btn" id="favBtn">
+                                    <div class="icon-wrap icon-sm round border">
+                                        <label data-toggle="tooltip" title="" data-original-title="Eliminar de favoritos"><i id="favIcon" class="fas fa-heart"></i></label>
+                                    </div>
+                                </a>
+                        </div>
+
+						{% else %}
+
+						<div class="icontext">
+                                <a href="{% url 'room_addfav' userid=user.id roomid=postroom.id%}?next={{ request.build_absolute_uri }}" class="btn" id="favBtn">
+                                    <div class="icon-wrap icon-sm round border">
+                                        <label data-toggle="tooltip" title="" data-original-title="Agregar a favoritos"><i id="favIcon" class="far fa-heart"></i></label>
+                                    </div>
+                                </a>
+                        </div>
+
+						{% endif %}
+							
+						{% else %}
+							<div class="icontext">
+                                <a href="{% url 'account_login' %}" class="btn">
+                                    <div class="icon-wrap icon-sm round border">
+                                        <label data-toggle="tooltip" title="" data-original-title="Agregar a favoritos"><i class="far fa-heart"></i></label>
+                                    </div>
+                                </a>
+                        	</div>						
+						{% endif %}
+		</div>
+</section>
+<br>
+<br>
+<!-- ========================= SECTION MAIN ========================= -->
+<section class="section-main padding-bottom">
+<div class="container">
+	<div class="row border border-top-0 bg-white ">
+<!-- ================= main slide ================= -->
+
+	{% if postroom.image1 %}
+	<div id="carrusel" class="carousel slide" data-ride="carousel">
+		<ol class="carousel-indicators">
+		  <li data-target="#carrusel" data-slide-to="0" class="active"></li>
+		  {% if postroom.image2  %}
+		  <li data-target="#carrusel" data-slide-to="1"></li>
+		  {% endif %}
+		  {% if postroom.image3  %}
+		  <li data-target="#carrusel" data-slide-to="2"></li>
+		  {% endif %}
+		  {% if postroom.image4  %}
+		  <li data-target="#carrusel" data-slide-to="3"></li>
+		  {% endif %}
+		  {% if postroom.image5  %}
+		  <li data-target="#carrusel" data-slide-to="4"></li>
+		  {% endif %}
+		  {% if postroom.image6  %}
+		  <li data-target="#carrusel" data-slide-to="5"></li>
+		  {% endif %}
+		</ol>
+		<div class="carousel-inner">
+		  <div class="carousel-item active">
+			<img class="d-block w-100" src="{{postroom.image1.url}}" alt="Qcuarto-{{postroom.title}}_1">
+		  </div>
+		  {% if postroom.image2  %}
+		  <div class="carousel-item">
+			<img class="d-block w-100" src="{{postroom.image2.url}}" alt="Qcuarto-{{postroom.title}}_2">
+		  </div>
+		  {% endif %}
+		  {% if postroom.image3  %}
+		  <div class="carousel-item">
+			<img class="d-block w-100" src="{{postroom.image3.url}}" alt="Qcuarto-{{postroom.title}}_3">
+		  </div>
+		  {% endif %}
+		  {% if postroom.image4  %}
+		  <div class="carousel-item">
+			<img class="d-block w-100" src="{{postroom.image4.url}}" alt="Qcuarto-{{postroom.title}}_4">
+		  </div>
+		  {% endif %}
+		  {% if postroom.image5  %}
+		  <div class="carousel-item">
+			<img class="d-block w-100" src="{{postroom.image5.url}}" alt="Qcuarto-{{postroom.title}}_5">
+		  </div>
+		  {% endif %}
+		  {% if postroom.image6  %}
+		  <div class="carousel-item">
+			<img class="d-block w-100" src="{{postroom.image6.url}}" alt="Qcuarto-{{postroom.title}}_6">
+		  </div>
+		  {% endif %}
+		</div>
+		<a class="carousel-control-prev" href="#carrusel" role="button" data-slide="prev">
+		  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		  <span class="sr-only">Previous</span>
+		</a>
+		<a class="carousel-control-next" href="#carrusel" role="button" data-slide="next">
+		  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+		  <span class="sr-only">Next</span>
+		</a>
+	  </div>
+	{% endif %}
+
+	{% if postroom.image1 %}
+	<div class=" col-6 col-lg-4">
+        <img src="{{postroom.image1.url}}" class="img-fluid" alt="Qcuarto-{{postroom.title}}_1">
+	</div>
+	{% endif %}
+	
+	{% if postroom.image2 %}
+	<div class=" col-6 col-lg-4">
+        <img src="{{postroom.image2.url}}" class="img-fluid" alt="Qcuarto-{{postroom.title}}_2">
+	</div>
+	{% endif %}
+
+	{% if postroom.image3 %}
+	<div class=" col-6 col-lg-4">
+        <img src="{{postroom.image3.url}}" class="img-fluid" alt="Qcuarto-{{postroom.title}}_3">
+	</div>
+	{% endif %}
+
+	{% if postroom.image4 %}
+	<div class=" col-6 col-lg-4">
+        <img src="{{postroom.image4.url}}" class="img-fluid" alt="Qcuarto-{{postroom.title}}_4">
+	</div>
+	{% endif %}
+
+	{% if postroom.image5 %}
+	<div class=" col-6 col-lg-4">
+        <img src="{{postroom.image5.url}}" class="img-fluid" alt="Qcuarto-{{postroom.title}}_5">
+	</div>
+	{% endif %}
+
+	{% if postroom.image6 %}
+	<div class=" col-6 col-lg-4">
+        <img src="{{postroom.image6.url}}" class="img-fluid" alt="Qcuarto-{{postroom.title}}_6">
+	</div>
+	{% endif %}
+
+</div> <!-- col.// -->
+</div> <!-- container .//  -->
+</section>
+
+<!-- ========================= PRECIO ========================= -->
+
+<section class="section-content padding-y">
+<div class="container">
+<article>
+<header class="section-heading">
+<h5 class="title-section">Precio y costos</h5>
+</header>
+<div class="row">
+	<div class="card bg2 mx-2 my-2 py-2 col-6 col-md-2">
+		<span class="form-check-label">
+		    <i class="fas fa-dollar-sign fa-2x"></i>
+		<h4>${{postroom.price}}</h4> <h6> Precio del sitio.</h6>
+		</span>
+	</div>
+
+	{% if postroom.deposit_check == True and postroom.deposit_amount != 0 %}
+	<div class="card bg2 mx-2 my-2 py-2 col-6  col-md-4">
+		<span class="form-check-label"><i class="fas fa-piggy-bank fa-2x"></i>
+		<h4>${{postroom.deposit_amount}}</h4>
+		<h6>Depósito</h6>
+		</span>
+	</div>
+	{% endif %}
+
+	{% if postroom.max_amount > 1 %}
+	<div class="card bg2 mx-2 my-2 py-2 col-6 col-md-2">
+		<span class="form-check-label">
+		    <i class="fas fa-user-plus fa-2x"></i>
+		</span>
+		<h4>${{postroom.price_extra}}</h4><h6> por persona extra.</h6>
+	</div>
+	{% endif %}
+</div>
+</article>
+</div>
+</section>
+
+<!-- ========================= UBICACION	 ========================= -->
+
+<section class="section-content padding-y">
+<div class="container">
+<article>
+<header class="section-heading">
+<h5 class="title-section">Ubicación</h5>
+</header>
+{% comment %} <div class="row">
+	<div class="card bg2 mx-2 my-2 py-2 col-6 col-md-2 ">
+		<span class="form-check-label">
+		    <i class="fas fa-map-marker fa-2x"></i>
+			<hr>
+		<h6>Estado:</h6> <h4> {{postroom.estado}}</h4>
+		<hr>
+		<h6>Municipio:</h6> <h4> {{postroom.municipio}}</h4>
+		<hr>
+		<!--<h6>Código Postal:</h6> <h4> {{postroom.cp}}</h4>
+		<hr> -->
+		<h6>Colonia:</h6> <h4> {{postroom.colonia}}</h4>
+		</span>
+	</div>
+
+</div> {% endcomment %}
+
+<div class="card bg2 mx-2 my-2 py-2 col-12 col-md-8 ">
+	<div id="map" style="height: 400px; width: 400px;"></div>
+</div
+
+</article>
+</div>
+</section>
+
+<!-- ========================= DESCRIPCIÓN ========================= -->
+
+<section class="section-content padding-y">
+<div class="container">
+<article class="p-3 mb-2 bg-light text-dark">
+<header class="section-heading">
+<h5 class="title-section">Descripción</h5>
+</header>
+<p>{{postroom.description|linebreaks}}</p>
+</article>
+<br>
+<br>
+
+	{% if postroom.place == 'casa' %}
+	<div class="card bg2 mx-2 my-2 py-2 col-6 col-md-4">
+		<span class="form-check-label"><i class="fas fa-home fa-2x"></i><h6>En casa</h6></span>
+	</div>
+	{% endif %}
+
+	{% if postroom.place == 'departamento' %}
+	<div class="card bg2 mx-2 my-2 py-2 col-6 col-md-4">
+		<span class="form-check-label"><i class="fas fa-building fa-2x"></i><h6>En departamento</h6></span>
+	</div>
+	{% endif %}
+
+	{% if postroom.place == 'otro' %}
+	<div class="card bg2 mx-2 my-2 py-2 col-6 col-md-4">
+		 <span class="form-check-label"><i class="fas fa-caravan fa-2x"></i><h6>Otro</h6></span>
+	</div>
+	{% endif %}
+</div>
+</section>
+<!-- ========================= CONTACTO ========================= -->
+
+<section class="section-content padding-y">
+<div class="container">
+<article>
+<header class="section-heading">
+<h5 class="title-section">Contacto con el arrendador</h5>
+</header>
+<div class="row">
+<!-- Button trigger modal -->
+<button onclick="location.href='{% url 'contact' "room" postroom.id %}?next=';" class="btn btn-primary col-5 col-md-3" data-toggle="modal" data-target="#phoneModal">
+		<span class="form-check-label"><i class="fas fa-phone fa-2x"></i><h6>Teléfono</h6>
+</button>
+
+{% if postroom.whatsapp %}
+<a target="_blank" class="btn offset-1 btn-success col-5 col-md-3" onclick="location.href='{% url 'contact' "room" postroom.id %}?next=';" href="https://wa.me/{{ postroom.phone|stringformat:"s"|slice:"1:"}}?text=%C2%A1Hola%21+Vi+tu+publicaci%C3%B3n%3A%0D%0Ahttps://qcuarto.com{% url 'room' postroom.id postroom.title|slugify %}%0D%0AEn+Qcuarto%2C+y+me+interesa.+%C2%BFPodr%C3%ADas+darme+m%C3%A1s+detalles%3F">
+	<span class="form-check-label"><i class="fab fa-whatsapp fa-2x"></i><h6>Enviar WhatsApp</h6>
+</a>
+{% endif %}
+
+<!-- Modal -->
+<div class="modal fade" id="phoneModal" tabindex="-1" role="dialog" aria-labelledby="phoneModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="phoneModalLabel"><span class="form-check-label"><i class="fas fa-phone fa-2x"></i>Teléfono</h5>
+      </div>
+      <div class="modal-body">
+	  Número de teléfono (formato internacional): 
+	  <a href="tel:{{postroom.phone}}"><h3>{{postroom.phone}}</h3></a>
+	  <h5> ¡Haga click en el número para llamar! </h5>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal">Listo!!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% if user.id != postroom.author.id %}
+    {# Botón mandar mensaje #}
+	<a href="{% url 'contact' "room" postroom.id %}?next={% url 'start_chat' postroom.author.id %}" type="button" class="btn btn-dark col-5 col-md-3 offset-1" id="contactBtn">
+		<span class="form-check-label"><i class="far fa-comment-alt fa-2x"></i><h6>Mandar mensaje</h6>
+	</a>
+{% endif %}
+</div><!--row-->
+<small> ** Si no pasa nada al dar click, revisa que tengas las ventanas emergentes permitidas en este sitio. </small>
+</article>
+</div>
+</section>
+
+
+<section class="section-content padding-y">
+<div class="container">
+<article>
+<header class="section-heading">
+<h5 class="title-section">Qué busca el arrendador</h5>
+</header>
+<div class="row">
+
+	{% if postroom.gender == 'hombre' %}
+	<div class="card bg2 mx-2 my-2 py-2 col-6 col-md-4">
+		<span class="form-check-label"><i class="fas fa-mars fa-2x"></i><h6>Hombre</h6></span>
+	</div>
+	{% endif %}
+
+	{% if postroom.gender == 'mujer' %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label"><i class="fas fa-venus fa-2x"></i><h6>Mujer</h6></span>
+	</div>
+	{% endif %}
+
+	{% if postroom.gender == 'otro' %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		 <span class="form-check-label"><i class="fas fa-venus-mars fa-2x"></i><h6>Cualquier género</h6></span>
+	</div>
+	{% endif %}
+
+	{% if postroom.smokers == 'si' %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label"><i class="fas fa-smoking fa-2x"></i><h6>Acepto Fumadores</h6></span>
+	</div>
+	{% endif %}
+
+	{% if postroom.smokers == 'no' %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label"><i class="fas fa-smoking-ban fa-2x"></i><h6>NO Acepto Fumadores</h6></span>
+	</div>
+	{% endif %}
+
+	{% if postroom.smokers == 'afuera' %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label"><i class="fas fa-air-freshener fa-2x"></i><h6>Fumar sólo afuera</h6></span>
+	</div>
+	{% endif %}
+
+	<div class="card bg2 mx-2 my-2 py-2 col-6 col-md-4">
+			<span class="form-check-label col-2"><i class="fas fa-users fa-2x"></i></span>
+			{% if postroom.min_amount == postroom.max_amount %}
+				<h6>Cuarto para {{postroom.min_amount}} Personas</h6>
+			{% else %}
+				<h6>Cuarto para {{postroom.min_amount}} a {{postroom.max_amount}} Personas</h6>
+			{% endif %}
+	</div>
+	{% if postroom.max_amount == 1 %}
+	<div class="card bg2 mx-2 my-2 py-2 col-6 col-md-4">
+			<span class="form-check-label"><i class="fas fa-user fa-2x"></i></span>
+          <h6>Cuarto exclusivamente individual</h6>
+	</div>
+	{% endif %}
+
+	{% if postroom.max_amount > 1 %}
+	<div class="card bg2 mx-2 my-2 py-2 col-6 col-md-2">
+		<span class="form-check-label">
+		    <i class="fas fa-user-plus fa-2x"></i>
+		</span>
+		<h4>${{postroom.price_extra}}</h4><h6> por persona extra.</h6>
+	</div>
+	{% endif %}
+
+<br></article>
+</div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+<!-- ========================= AMENIDADES ========================= -->
+<section class="section-content padding-y">
+<div class="container">
+<article>
+<header class="section-heading">
+<h5 class="title-section">Amenidades del sitio</h5>
+</header>
+<div class="row">
+
+	{% if 'servicios' in postroom.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-6 col-md-4">
+		<span class="form-check-label">
+				    <i class="fas fa-bolt fa-2x"></i>
+				    <i class="fas fa-tint fa-2x"></i>
+				    <i class="fas fa-fire fa-2x"></i>
+
+				  </span>
+				  <h6>Servicios incluidos</h6>
+	</div>
+	{% endif %}
+
+	{% if 'wifi' in postroom.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-wifi fa-2x"></i>
+				  </span>
+				  <h6>WiFi</h6>
+	</div>
+	{% endif %}
+
+	{% if 'estacionamiento' in postroom.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		 <span class="form-check-label">
+				    <i class="fas fa-car fa-2x"></i>
+				  </span>
+				  <h6>Parking</h6>
+	</div>
+	{% endif %}
+
+	{% if 'limpieza' in postroom.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-broom fa-2x"></i>
+				  </span>
+				  <h6>Limpieza incluida</h6>
+	</div>
+	{% endif %}
+
+	{% if 'gym' in postroom.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-dumbbell fa-2x"></i>
+		</span>
+		<h6>Gym</h6>
+	</div>
+	{% endif %}
+
+	{% if 'elevador' in postroom.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-caret-square-up fa-2x"></i>
+					<i class="fas fa-caret-square-down fa-2x"></i>
+
+				  </span>
+				  <h6>Elevador</h6>
+	</div>
+	{% endif %}
+
+	{% if 'bano' in postroom.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-toilet fa-2x"></i>
+
+				  </span>
+				  <h6>Baño privado</h6>
+	</div>
+	{% endif %}
+
+	{% if 'facturacion' in postroom.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-file-invoice-dollar fa-2x"></i>
+
+				  </span>
+				  <h6>Facturación</h6>
+	</div>
+	{% endif %}
+
+	{% if 'cocina' in postroom.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-blender fa-2x"></i>
+
+				  </span>
+				  <h6>Acceso a cocina</h6>
+	</div>
+	{% endif %}
+
+	{% if 'comida' in postroom.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-hamburger fa-2x"></i>
+
+				  </span>
+				  <h6>Preparación de comidas</h6>
+	</div>
+	{% endif %}
+
+	{% if 'mascotas' in postroom.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-paw fa-2x"></i>
+
+				  </span>
+				  <h6>Acepto Mascotas</h6>
+	</div>
+	{% endif %}
+
+	{% if 'visitas' in postroom.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-users fa-2x"></i>
+
+				  </span>
+				  <h6>Acepto visitas</h6>
+	</div>
+	{% endif %}
+
+	{% if 'infantes' in postroom.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-baby fa-2x"></i>
+
+				  </span>
+				  <h6>Acepto infantes</h6>
+	</div>
+	{% endif %}
+
+	{% if 'lavadora' in postroom.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-tshirt fa-2x"></i>
+
+				  </span>
+				  <h6>Lavadora</h6>
+	</div>
+	{% endif %}
+
+	{% if 'secadora' in postroom.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-tint-slash fa-2x"></i>
+
+				  </span>
+				  <h6>Secadora</h6>
+	</div>
+	{% endif %}
+
+	{% if 'directo' in postroom.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-handshake fa-2x"></i>
+
+				  </span>
+				  <h6>Trato Directo</h6>
+	</div>
+	{% endif %}
+
+
+</div>
+</article>
+</div>
+</section>
+
+<br>
+
+<script>
+	var map = L.map('map').setView([{{postroom.latitud}},{{postroom.longitud}}], 12);
+	var grupoMarcadores = L.layerGroup().addTo(map);
+	
+
+	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	}).addTo(map);
+
+	L.marker([{{postroom.latitud}},{{postroom.longitud}}]).addTo(map);
+</script>
+
+{% endblock %}

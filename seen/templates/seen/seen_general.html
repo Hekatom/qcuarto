@@ -1,0 +1,19 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Buscar un cuarto{% endblock %}
+{% block content %}
+
+
+
+<!-- RESULTADOS PARA ANUNCIOS-->
+
+<div class="container-fluid">
+	<div class="row">
+		<a type="button" href="{% url 'seen_person' %}" class="mx-1 col-5 col-md-3 btn btn-outline-info btn-sm text-center text-uppercase">Búsquedas publicadas</a>
+		<a type="button" href="{% url 'seen_room' %}"  class="mx-1 col-5 col-md-3 btn btn-outline-info btn-sm text-center text-uppercase">Cuartos publicados</a>
+	</div>
+</div>
+
+<br>
+
+{% endblock %}

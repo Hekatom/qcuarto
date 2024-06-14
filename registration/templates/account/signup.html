@@ -1,0 +1,101 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}Iniciar sesión{% endblock %}
+{% block content %}
+
+
+<div class="card offset-md-4 col-md-4 mt-5 bg2">
+<article class="card-body">
+    <a href="{% url 'account_login' %}" class="float-right btn btn-outline-primary">Ya tengo una cuenta <i class="fas fa-sign-in-alt"></i> </a>
+    <h4 class="card-title mb-4 mt-1">Registro</h4>
+    Social login, para despues
+	<p>
+		<a href="" class="btn btn-block btn-facebook"> <i class="fab fa-facebook-f"></i> &nbsp; Registro via Facebook</a>
+		<!-- <a href="" class="btn btn-block btn-danger"> <i class="fab fa-google"></i> &nbsp; Login via Google</a> -->
+	</p>
+    <hr>
+    <h3 class="text-center">Ó...</h3>
+    <hr>
+    <p class="small">* Todos los campos son obligatorios *</p>
+    
+   <!-- form copiada de internet 
+    <form method="post" novalidate>
+  {% csrf_token %}
+
+  {% for hidden_field in form.hidden_fields %}
+    {{ hidden_field }}
+  {% endfor %}
+
+  {% for field in form.visible_fields %}
+    <div class="form-group">
+      {{ field.label_tag }}
+      {{ field }}
+      {% if field.help_text %}
+        <small class="form-text text-muted">{{ field.help_text }}</small>
+      {% endif %}
+    </div>
+  {% endfor %}
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form> -->
+
+    <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+    {% csrf_token %}
+
+    {% if form.errors %} 
+			<div class="card border-danger mb-3" style="max-width: 18rem;">
+  				<div class="card-body text-danger">
+    				<h5 class="card-title">{{ form.errors }}</h5>
+				</div>	
+			</div>
+		{% endif %}
+    
+    <p>Nombre de Usuario (puede no ser tu nombre real)</p>
+    <div class="form-group input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+         </div>
+         {{form.username}}
+        {# <input type="text" name="username" class="form-control" placeholder="Nombre o apodo" maxlength="120" required id="id_username"> #}
+    </div> <!-- form-group// -->
+<br>
+
+    <p>Correo Electrónico</p>
+    <div class="form-group input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+         </div>
+         {{form.email}}
+        {# <input type="email" name="email" class="form-control" placeholder="Email" maxlength="254" required id="id_email"> #}
+    </div> <!-- form-group// -->
+<br>
+
+    <p>Constraseña</p>
+    <div class="form-group input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+        </div>
+        {{form.password1}}
+        {# <input type="password" name="password1" class="form-control" placeholder="Contraseña" maxlength="50" required id="id_password1"> #}
+    </div> <!-- form-group// -->
+    <div class="form-group input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+        </div>
+        {{form.password2}}
+        {# <input type="password" name="password2" class="form-control" placeholder="Repita contraseña" maxlength="50" required id="id_password2"> #}
+    </div> <!-- form-group// -->                                      
+    <div class="form-group">
+
+    {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+
+    <button type="submit" class="btn btn-primary btn-block"> Crear Cuenta  </button>
+    </div> <!-- form-group// -->      
+</form>
+</article>
+</div> <!-- card.// -->
+
+{% endblock %}

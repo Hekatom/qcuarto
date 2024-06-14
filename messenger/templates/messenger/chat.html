@@ -1,0 +1,114 @@
+{% extends 'core/plugins.html' %}
+{% load static %}
+{% block title %}postperson.title{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="col-12 px-0">
+
+	<div class="col-12 px-0 bg2">
+      <div class="bg-white">
+
+        <div class="bg-gray py-3 bg-light">
+          <a href="{% url 'messages' %}" class="h5 mb-0 py-1"><i class="fas fa-chevron-left pr-2"></i>Regresar</a>
+        </div>
+
+      </div>
+    </div>
+
+	<div class="col-12 px-0 bg2">
+      <div class="bg-white">
+
+		{% for user in thread.users.all %}
+            {% if user != request.user %} 
+			<div class="bg-gray py-3 bg-light">      
+            	<h4 class="mb-4"><a href="{% url 'profile' user.id %}" class="btn btn-secondary">{{user}}</a></h4>
+			</div>
+            {% endif %}
+        {% endfor %}
+
+      </div>
+    </div>
+
+      <div class="px-4 py-5 chat-box bg-white thread" id="thread">
+
+      {% for message in object.messages.all %}
+
+        {% if request.user == message.user %}
+        <!-- Reciever Message-->
+        <div class="mine media w-50 ml-auto mb-3">
+          <div class="media-body">
+            <div class="bg-primary rounded py-2 px-3 mb-2">
+              <p class="text-small mb-0 text-white">{{message.content}}</p>
+            </div>
+            <p class="small text-muted">{{message.created}}</p>
+          </div>
+        </div>
+        <!-- Sender Message-->
+        {% endif %}
+
+        {% if request.user != message.user %}
+        <div class="media w-50 mb-3">
+          <div class="media-body ml-3">
+            <div class="bg-light rounded py-2 px-3 mb-2">
+              <p class="text-small mb-0 text-muted">{{message.content}}</p>
+            </div>
+            <p class="small text-muted">{{message.created}}</p>
+          </div>
+        </div>
+        {% endif %}
+
+      {% endfor %}  
+
+      </div>
+
+		<!-- Typing area -->
+
+      <form action="#" class="bg-light my-2 py-3">
+        <div class="input-group ">
+          <textarea id="content" placeholder="Escribe tu mensaje" class="form-control rounded-0 border-0 py-3 bg-light"></textarea>
+          <div class="input-group-append">
+            <button id="send" class="btn"> <i class="fa fa-paper-plane fa-3x"></i></button>
+          </div>
+        </div>
+      </form>
+    
+    <script>
+        var send = document.getElementById("send");
+        send.addEventListener("click",function(){
+          var content = encodeURIComponent(document.getElementById("content").value);
+          if (content.length > 0){
+          const url = "{% url 'add_message' thread.pk %}" + "?content="+content;
+          fetch(url, {'credentials':'include'}).then(response => response.json()).then(function(data){
+            location.reload();
+          })
+         }
+        })
+
+        // forzar el scroll hasta abajo
+        function BottomScroll(){
+          var thread = document.getElementById("thread");
+          thread.scrollTop = thread.scrollHeight;
+        }
+
+        BottomScroll();
+    </script>
+
+    
+
+    {% comment %}      
+    <button id="testBtn">Prueba de petición asíncrona</button>
+    <script>
+      var testBtn = document.getElementById("testBtn");
+      testBtn.addEventListener("click",function(){
+        const url= "{% url 'add_msg' thread.pk %}"
+        fetch(url).then()
+      })
+    </script>
+    
+    {% endcomment %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

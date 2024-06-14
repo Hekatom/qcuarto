@@ -1,0 +1,125 @@
+## actualizar wheel y pip
+
+python -m pip install -U pip wheel setuptools
+
+## Instalar django
+
+pip install django
+
+## pip necesario, nombre en INSTALLED_APPS:
+1. psycopg2, va en DATABASES
+2. django-allauth, allauth;allauth.account;allauth.socialaccount
+3. django-ckeditor, ckeditor
+4. django-phonenumber-field, phonenumber_field
+5. django-import-export, import_export
+6. django-filter, django_filters
+7. django-phonenumbers, es requerido para el punto 4
+8. pillow, para imagenes
+9. babel, es requerido para el punto 4
+10. django-extensions, django_extensions
+11. django-cleanup, django_cleanup
+
+pip install psycopg2 django-allauth django-ckeditor django-phonenumber-field django-import-export django-filter django-phonenumbers pillow babel django-extensions django-cleanup
+
+##SI ES EN MAC o LINUX:
+pip install psycopg2-binary django-allauth django-ckeditor django-phonenumber-field django-import-export django-filter django-phonenumbers pillow babel django-extensions django-cleanup
+
+
+## Probablemente no detecte cambios en makemigrations, habrá que escribir lo siguiente:
+
+python manage.py makemigrations <appname>
+
+python manage.py makemigrations core estaticas posts registration seen favorites messenger profiles find
+
+
+## Inseguro, pero probablemente hay que agregar esto en SETTINGS:
+
+import os
+
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = [
+
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+
+]
+
+#CKEDITOR
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'extraPlugins': 'wordcount',
+    }
+}
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/2.2/howto/static-files/
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+
+# Media Files
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+#Auth redirect
+
+#Allauth
+
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
+ACCOUNT_UNIQUE_EMAIL = True
+
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+
+#django-filter
+FILTERS_EMPTY_CHOICE_LABEL = True
+
+## Agregué en Settings.py:
+
+# Keys for objects
+DEFAULT_AUTO_FIELD='django.db.models.AutoField' 
+
+## Aunque pude haber hecho:
+
+class Topic(models.Model):
+    id = models.AutoField(primary_key=True)
+    ...
+
+# Your models do not have primary keys. But they are being created automatically by django.
+
+# You need to choose type of auto-created primary keys https://docs.djangoproject.com/en/3.2/releases/3.2/#customizing-type-of-auto-created-primary-keys (new in Django 3.2
+
+
+## Por el mensaje:
+
+# WARNINGS:
+# estaticas.Contact: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+#         HINT: Configure the DEFAULT_AUTO_FIELD setting or the EstaticasConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+# location.CP: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+#         HINT: Configure the DEFAULT_AUTO_FIELD setting or the LocationConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+# location.Colonia: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+#         HINT: Configure the DEFAULT_AUTO_FIELD setting or the LocationConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+# location.Estado: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+#         HINT: Configure the DEFAULT_AUTO_FIELD setting or the LocationConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+# location.Municipio: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+#         HINT: Configure the DEFAULT_AUTO_FIELD setting or the LocationConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+# messenger.Message: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+#         HINT: Configure the DEFAULT_AUTO_FIELD setting or the MessengerConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+# messenger.Thread: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+#         HINT: Configure the DEFAULT_AUTO_FIELD setting or the MessengerConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+# posts.PostPerson: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+#         HINT: Configure the DEFAULT_AUTO_FIELD setting or the PostsConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+# posts.PostRoom: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+#         HINT: Configure the DEFAULT_AUTO_FIELD setting or the PostsConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+# registration.Profile: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+#         HINT: Configure the DEFAULT_AUTO_FIELD setting or the RegistrationConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.

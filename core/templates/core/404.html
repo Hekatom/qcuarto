@@ -1,0 +1,34 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Qcuarto - Búsqueda de cuartos simple y barata{% endblock %}
+
+{% block room_searchbar %}
+{% endblock room_searchbar %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="error-template">
+                <h1>
+                    Oops!</h1>
+
+                <h1 class="display-1"> <b>404 Página no encontrada</b> </h1>
+                
+                <div class="error-details">
+                    Una disculpa, no encontramos la página que buscas.
+                </div>
+                <div class="error-actions">
+                    <a href="{% url 'home' %}" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span>
+                        Ir a la pantalla principal </a><a href="{% url 'contact' %}" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-envelope"></span> Ir a Feedback y Contacto </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+

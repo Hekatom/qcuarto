@@ -1,0 +1,628 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Buscar un cuarto{% endblock %}
+{% block content %}
+
+
+<div class="card offset-1 col-10">
+<header class="card-header">
+    <h4 class="card-title mt-2">Registro de búsqueda</h4>
+</header>
+<article class="card-body">
+
+
+<form method="POST" action="" enctype="multipart/form-data" id="personForm" load-municipios="{% url 'load_municipios' %}" load-colonias="{% url 'load_colonias' %}">
+  {% csrf_token %}
+
+		<div class="form-row">
+        	<div class="col form-group col-lg-5 col-10 bg2 py-2 mx-1">
+			{% if form.image.errors %}
+			<div class="card border-danger mb-3" style="max-width: 18rem;">
+  				<div class="card-body text-danger">
+    				<h5 class="card-title">{{ form.image.errors }}</h5>
+				</div>	
+			</div>
+			{% endif %}
+			<label>Subir Foto de Quien Busca</label>
+				{{ form.image }}
+				<img id="frame" {% if person_data.image %}src="{{person_data.image.url}}"{% endif %} width="100px" height="100px"/>
+        	</div> <!--foto individual-->
+		</div>
+		{% comment %} <hr>
+
+		    <div class="form-row">
+        <div class="col-12 form-group">
+			{% if form.estado.errors %} 
+			<div class="card border-danger mb-3" style="max-width: 18rem;">
+  				<div class="card-body text-danger">
+    				<h5 class="card-title">{{ form.estado.errors }}</h5>
+				</div>	
+			</div>
+			{% endif %}
+            <h6>Estado</h6>
+            {{ form.estado }}
+        </div> <!-- form-group end.// -->
+
+        <div class="col-12 form-group">
+			{% if form.municipio.errors %} 
+			<div class="card border-danger mb-3" style="max-width: 18rem;">
+  				<div class="card-body text-danger">
+    				<h5 class="card-title">{{ form.municipio.errors }}</h5>
+				</div>	
+			</div>
+			{% endif %}
+            <h6>Municipio</h6>
+            {{ form.municipio }}
+        </div> <!-- form-group end.// -->
+
+		<div class="col-12 form-group">
+			{% if form.colonia.errors %} 
+			<div class="card border-danger mb-3" style="max-width: 18rem;">
+  				<div class="card-body text-danger">
+    				<h5 class="card-title">{{ form.colonia.errors }}</h5>
+				</div>	
+			</div>
+			{% endif %}
+            <h6>Colonia</h6>
+            {{ form.colonia }}
+        </div> <!-- form-group end.// -->
+		</div>
+ {% endcomment %}
+
+
+		<hr>
+
+
+	<h6> Mapa - elige una zona aproximada </h6>
+
+		<p> Busca la ubicación en la barra de búsqueda o arrastra el mapa hasta encontrar la ubicación aproximada, no es necesario que sea exacta. </p>
+
+		<div class="form-row">
+			<div class="col form-group">
+				{% if form.latitud.errors %} 
+				<div class="card border-danger mb-3" style="max-width: 18rem;">
+					  <div class="card-body text-danger">
+						<h5 class="card-title">{{ form.latitud.errors }}</h5>
+					</div>	
+				</div>
+				{% endif %}
+				{% if form.longitud.errors %} 
+				<div class="card border-danger mb-3" style="max-width: 18rem;">
+					  <div class="card-body text-danger">
+						<h5 class="card-title">{{ form.longitud.errors }}</h5>
+					</div>	
+				</div>
+				{% endif %}
+				<input type="hidden" name="{{form.latitud.name}}" value="0.0" step="0.0000000000000001" required id="id_{{form.latitud.name}}">
+				<input type="hidden" name="{{form.longitud.name}}" value="0.0" step="0.0000000000000001" required id="id_{{form.longitud.name}}">
+			</div> <!-- form-group end.// -->
+		</div>
+
+
+		<div id="map" style="height: 400px; width: 400px;"></div>
+
+		<hr>
+
+
+        <div class="form-row">
+        <div class="col form-group">
+
+			{% if form.name.errors %} 
+			<div class="card border-danger mb-3" style="max-width: 18rem;">
+  				<div class="card-body text-danger">
+    				<h5 class="card-title">{{ form.name.errors }}</h5>
+				</div>	
+			</div>
+			{% endif %}
+		
+            <h4>Nombre de quien / Quienes buscan</h4>
+			<input disabled  maxlength="3" size="3" value="120" id="counter1"> caracteres remanentes
+            {{ form.name }}
+            {# <input type="text" class="form-control" placeholder=""> #}
+
+        </div> <!-- form-group end.// -->
+        </div>
+        <hr>
+
+        <div class="form-row">
+        <div class="col form-group">
+
+			{% if form.description.errors %} 
+			<div class="card border-danger mb-3" style="max-width: 18rem;">
+  				<div class="card-body text-danger">
+    				<h5 class="card-title">{{ form.description.errors }}</h5>
+				</div>	
+			</div>
+			{% endif %}
+
+            <label><h5>Descripción de quiénes buscan, a qué se dedican, características 
+            que buscan, qué desean del lugar a rentar, cuéntanos sobre tí.</h5></label>
+			<input disabled  maxlength="3" size="3" value="800" id="counter2"> caracteres remanentes
+            {{ form.description }}
+            {# <input type="text" class="form-control placeholder-large" placeholder=""> #}
+        </div> <!-- form-group end.// -->
+        </div>
+        <hr>
+      
+    <div class="form-group">
+
+			{% if form.gender.errors %} 
+			<div class="card border-danger mb-3" style="max-width: 18rem;">
+  				<div class="card-body text-danger">
+    				<h5 class="card-title">{{ form.gender.errors }}</h5>
+				</div>	
+			</div>
+			{% endif %}
+
+    	<label><h4>Soy / Somos...</h4></label>
+    	<br>
+    	<div class="container">
+    	<div class="row">	
+
+		<label class="form-check form-check-inline col-5 col-md-3 card bg2" for="id_{{form.gender.name}}_0">
+          <input class="form-check-input" type="{{form.gender.field.widget.input_type}}" name="{{form.gender.name}}" value="{{form.gender.field.widget.choices.0.0}}" id="id_{{form.gender.name}}_0">
+          <span class="form-check-label"><i class="fas fa-mars fa-2x"></i><h6>{{form.gender.field.widget.choices.0.1}}</h6></span>
+        </label>
+
+		<label class="form-check form-check-inline col-5 col-md-3 card bg2" for="id_{{form.gender.name}}_1">
+          <input class="form-check-input" type="{{form.gender.field.widget.input_type}}" name="{{form.gender.name}}" value="{{form.gender.field.widget.choices.1.0}}" id="id_{{form.gender.name}}_1">
+          <span class="form-check-label"><i class="fas fa-venus fa-2x"></i><h6>{{form.gender.field.widget.choices.1.1}}</h6></span>
+        </label>
+
+		<label class="form-check form-check-inline col-5 col-md-3 card bg2" for="id_{{form.gender.name}}_2">
+          <input class="form-check-input" type="{{form.gender.field.widget.input_type}}" name="{{form.gender.name}}" value="{{form.gender.field.widget.choices.2.0}}" id="id_{{form.gender.name}}_2"> 
+          <span class="form-check-label"><i class="fas fa-transgender-alt fa-2x"></i><h6>{{form.gender.field.widget.choices.2.1}}</h6></span>
+        </label>
+
+		<label class="form-check form-check-inline col-5 col-md-3 card bg2" for="id_{{form.gender.name}}_3">
+          <input class="form-check-input" type="{{form.gender.field.widget.input_type}}" name="{{form.gender.name}}" value="{{form.gender.field.widget.choices.3.0}}" id="id_{{form.gender.name}}_3">
+          <span class="form-check-label"><i class="fas fa-venus-mars fa-2x"></i><h6>{{form.gender.field.widget.choices.3.1}}</h6></span>
+        </label>
+
+		
+    </div>
+    </div>
+    </div> <!-- form-group end.// -->
+    <hr>
+
+    <hr>
+
+    <div class="form-group">
+
+			{% if form.smokes.errors %} 
+			<div class="card border-danger mb-3" style="max-width: 18rem;">
+  				<div class="card-body text-danger">
+    				<h5 class="card-title">{{ form.smokes.errors }}</h5>
+				</div>	
+			</div>
+			{% endif %}
+
+    	<label><h4>¿Fumas?</h4><h6>Dejar en blanco si no fumas</h6></label>
+    	<br>
+    	<div class="container">
+    	<div class="row">	
+            <label class="form-check form-check-inline col-5 col-md-3 card bg2" >
+          		<input class="form-check-input" type="{{form.smokes.field.widget.input_type}}" name="{{form.smokes.name}}" id="id_{{form.smokes.name}}">
+          		<span class="form-check-label"><i class="fas fa-smoking fa-2x"></i><h6>Sí fumo</h6></span>
+        	</label>
+        
+    </div>
+    </div>
+    </div> <!-- form-group end.// -->
+    <hr>
+
+    <div class="container">
+
+			{% if form.amount.errors %} 
+			<div class="card border-danger mb-3" style="max-width: 18rem;">
+  				<div class="card-body text-danger">
+    				<h5 class="card-title">{{ form.amount.errors }}</h5>
+				</div>	
+			</div>
+			{% endif %}
+
+		<label for="id_{{form.amount.name}}">
+    		<h3>Personas que habitarán el mismo sitio</h3>
+		</label>
+    	
+		<div class="row">
+        	<div class="form-group">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="fa fa-user-friends"></i></span>
+					</div>
+					<input type="{{form.amount.field.widget.input_type}}" name="{{form.amount.name}}" class="form-control" value="1" min="0" required id="id_{{form.amount.name}}">
+				</div> <!-- input-group.// -->
+			  
+			</div>
+			
+
+    </div>
+    </div>
+    <hr>
+
+
+<div class="card">
+	<article class="card-group-item">
+
+	{% if form.amenities.errors %} 
+	<div class="card border-danger mb-3" style="max-width: 18rem;">
+  		<div class="card-body text-danger">
+    		<h5 class="card-title">{{ form.amenities.errors }}</h5>
+		</div>	
+	</div>
+	{% endif %}
+	
+		<header class="card-header">
+			<h3 class="title">Amenidades que busco...</h3>
+		</header>
+		<div class="card-body">
+				<div class="container-fluid">
+				<div class="row">
+
+					<div class="col-12 col-md-2 bg2 py-1 m-1">
+						<label class="form-check" for="id_{{form.amenities.name}}_0">
+				  			<input class="form-check-input" type="{{form.amenities.field.widget.input_type}}" name="{{form.amenities.name}}" value="{{form.amenities.field.widget.choices.0.0}}" id="id_{{form.amenities.name}}_0">
+				  			<span class="form-check-label">
+				   			 	<i class="fas fa-bolt fa-2x"></i>
+				   			 	<i class="fas fa-tint fa-2x"></i>
+				    			<i class="fas fa-fire fa-2x"></i>
+				  			</span>
+				  			<h6>{{form.amenities.field.widget.choices.0.1}}</h6>
+						</label> <!-- form-check.// -->
+					</div>
+
+					<div class="col-12 col-md-2 bg2 py-1 m-1">
+				<label class="form-check" for="id_{{form.amenities.name}}_1">
+				  <input class="form-check-input" type="{{form.amenities.field.widget.input_type}}" name="{{form.amenities.name}}" value="{{form.amenities.field.widget.choices.1.0}}" id="id_{{form.amenities.name}}_1">
+				  <span class="form-check-label">
+				    <i class="fas fa-wifi fa-2x"></i>
+				  </span>
+				  <h6>{{form.amenities.field.widget.choices.1.1}}</h6>
+				</label> <!-- form-check.// -->
+				</div>
+					
+				<div class="col-12 col-md-2 bg2 py-1 m-1">
+				<label class="form-check" for="id_{{form.amenities.name}}_2">
+				  <input class="form-check-input" type="{{form.amenities.field.widget.input_type}}" name="{{form.amenities.name}}" value="{{form.amenities.field.widget.choices.2.0}}" id="id_{{form.amenities.name}}_2">
+				  <span class="form-check-label">
+				    <i class="fas fa-car fa-2x"></i>
+				  </span>
+				  <h6>{{form.amenities.field.widget.choices.2.1}}</h6>
+				</label> <!-- form-check.// -->
+				</div>
+
+				<div class="col-12 col-md-2 bg2 py-1 m-1">
+				<label class="form-check" for="id_{{form.amenities.name}}_3">
+				  <input class="form-check-input" type="{{form.amenities.field.widget.input_type}}" name="{{form.amenities.name}}" value="{{form.amenities.field.widget.choices.3.0}}" id="id_{{form.amenities.name}}_3">
+				  <span class="form-check-label">
+				    <i class="fas fa-broom fa-2x"></i>
+				  </span>
+				  <h6>{{form.amenities.field.widget.choices.3.1}}</h6>
+				</label> <!-- form-check.// -->
+
+				</div>
+				
+				<div class="col-12 col-md-2 bg2 py-1 m-1">
+				<label class="form-check" for="id_{{form.amenities.name}}_4">
+				  <input class="form-check-input" type="{{form.amenities.field.widget.input_type}}" name="{{form.amenities.name}}" value="{{form.amenities.field.widget.choices.4.0}}" id="id_{{form.amenities.name}}_4">
+				  <span class="form-check-label">
+				    <i class="fas fa-dumbbell fa-2x"></i>
+				  </span>
+				  <h6>{{form.amenities.field.widget.choices.4.1}}</h6>
+				</label> <!-- form-check.// -->
+				</div>
+
+				<div class="col-12 col-md-2 bg2 py-1 m-1">
+				<label class="form-check" for="id_{{form.amenities.name}}_5">
+				  <input class="form-check-input" type="{{form.amenities.field.widget.input_type}}" name="{{form.amenities.name}}" value="{{form.amenities.field.widget.choices.5.0}}" id="id_{{form.amenities.name}}_5">
+				  <span class="form-check-label">
+				    <i class="fas fa-caret-square-up fa-2x"></i>
+					<i class="fas fa-caret-square-down fa-2x"></i>
+				  </span>
+				  <h6>{{form.amenities.field.widget.choices.5.1}}</h6>
+				</label> <!-- form-check.// -->
+				</div>
+
+				<div class="col-12 col-md-2 bg2 py-1 m-1">
+				<label class="form-check" for="id_{{form.amenities.name}}_6">
+				  <input class="form-check-input" type="{{form.amenities.field.widget.input_type}}" name="{{form.amenities.name}}" value="{{form.amenities.field.widget.choices.6.0}}" id="id_{{form.amenities.name}}_6">
+				  <span class="form-check-label">
+				    <i class="fas fa-toilet fa-2x"></i>
+				  </span>
+				  <h6>{{form.amenities.field.widget.choices.6.1}}</h6>
+				</label> <!-- form-check.// -->
+				</div>
+
+				<div class="col-12 col-md-2 bg2 py-1 m-1">
+				<label class="form-check" for="id_{{form.amenities.name}}_7">
+				  <input class="form-check-input" type="{{form.amenities.field.widget.input_type}}" name="{{form.amenities.name}}" value="{{form.amenities.field.widget.choices.7.0}}" id="id_{{form.amenities.name}}_7">
+				  <span class="form-check-label">
+				    <i class="fas fa-file-invoice-dollar fa-2x"></i>
+				  </span>
+				  <h6>{{form.amenities.field.widget.choices.7.1}}</h6>
+				</label> <!-- form-check.// -->
+				</div>
+
+				<div class="col-12 col-md-2 bg2 py-1 m-1">
+				<label class="form-check" for="id_{{form.amenities.name}}_8">
+				  <input class="form-check-input" type="{{form.amenities.field.widget.input_type}}" name="{{form.amenities.name}}" value="{{form.amenities.field.widget.choices.8.0}}" id="id_{{form.amenities.name}}_8">
+				  <span class="form-check-label">
+				    <i class="fas fa-blender fa-2x"></i>
+				  </span>
+				  <h6>{{form.amenities.field.widget.choices.8.1}}</h6>
+				</label> <!-- form-check.// -->
+				</div>
+
+				<div class="col-12 col-md-2 bg2 py-1 m-1">
+				<label class="form-check" for="id_{{form.amenities.name}}_9">
+				  <input class="form-check-input" type="{{form.amenities.field.widget.input_type}}" name="{{form.amenities.name}}" value="{{form.amenities.field.widget.choices.9.0}}" id="id_{{form.amenities.name}}_9">
+				  <span class="form-check-label">
+				    <i class="fas fa-hamburger fa-2x"></i>
+				  </span>
+				  <h6>{{form.amenities.field.widget.choices.9.1}}</h6>
+				</label> <!-- form-check.// -->
+				</div>
+
+				<div class="col-12 col-md-2 bg2 py-1 m-1">
+				<label class="form-check" for="id_{{form.amenities.name}}_10">
+				  <input class="form-check-input" type="{{form.amenities.field.widget.input_type}}" name="{{form.amenities.name}}" value="{{form.amenities.field.widget.choices.10.0}}" id="id_{{form.amenities.name}}_10">
+				  <span class="form-check-label">
+				    <i class="fas fa-paw fa-2x"></i>
+				  </span>
+				  <h6>{{form.amenities.field.widget.choices.10.1}}</h6>
+				</label> <!-- form-check.// -->
+				</div>
+
+				<div class="col-12 col-md-2 bg2 py-1 m-1">
+				<label class="form-check" for="id_{{form.amenities.name}}_11">
+				  <input class="form-check-input" type="{{form.amenities.field.widget.input_type}}" name="{{form.amenities.name}}" value="{{form.amenities.field.widget.choices.11.0}}" id="id_{{form.amenities.name}}_11">
+				  <span class="form-check-label">
+				    <i class="fas fa-users fa-2x"></i>
+				  </span>
+				  <h6>{{form.amenities.field.widget.choices.11.1}}</h6>
+				</label> <!-- form-check.// -->
+				</div>
+
+				<div class="col-12 col-md-2 bg2 py-1 m-1">
+				<label class="form-check" for="id_{{form.amenities.name}}_12">
+				  <input class="form-check-input" type="{{form.amenities.field.widget.input_type}}" name="{{form.amenities.name}}" value="{{form.amenities.field.widget.choices.12.0}}" id="id_{{form.amenities.name}}_12">
+				  <span class="form-check-label">
+				    <i class="fas fa-baby fa-2x"></i>	    
+				  </span>
+				  <h6>{{form.amenities.field.widget.choices.12.1}}</h6>
+				</label> <!-- form-check.// -->
+				</div>
+
+				<div class="col-12 col-md-2 bg2 py-1 m-1">
+				<label class="form-check" for="id_{{form.amenities.name}}_13">
+				  <input class="form-check-input" type="{{form.amenities.field.widget.input_type}}" name="{{form.amenities.name}}" value="{{form.amenities.field.widget.choices.13.0}}" id="id_{{form.amenities.name}}_13">
+				  <span class="form-check-label">
+				    <i class="fas fa-tshirt fa-2x"></i>  
+				  </span>
+				  <h6>{{form.amenities.field.widget.choices.13.1}}</h6>
+				</label> <!-- form-check.// -->
+				</div>
+
+				<div class="col-12 col-md-2 bg2 py-1 m-1">
+				<label class="form-check" for="id_{{form.amenities.name}}_14">
+				  <input class="form-check-input" type="{{form.amenities.field.widget.input_type}}" name="{{form.amenities.name}}" value="{{form.amenities.field.widget.choices.14.0}}" id="id_{{form.amenities.name}}_14">
+				  <span class="form-check-label">
+				    <i class="fas fa-tint-slash fa-2x"></i>  
+				  </span>
+				  <h6>{{form.amenities.field.widget.choices.14.1}}</h6>
+				</label> <!-- form-check.// -->
+				</div>
+
+				<div class="col-12 col-md-2 bg2 py-1 m-1">
+				<label class="form-check" for="id_{{form.amenities.name}}_15">
+				  <input class="form-check-input" type="{{form.amenities.field.widget.input_type}}" name="{{form.amenities.name}}" value="{{form.amenities.field.widget.choices.15.0}}" id="id_{{form.amenities.name}}_15">
+				  <span class="form-check-label">
+				    <i class="fas fa-handshake fa-2x"></i>
+				  </span>
+				  <h6>{{form.amenities.field.widget.choices.15.1}}</h6>
+				</label> <!-- form-check.// -->
+				</div>
+
+
+
+
+				</div>
+				</div>
+		</div> <!-- card-body.// -->
+	</article> <!-- card-group-item.// -->
+</div> <!-- card.// -->
+
+<hr>
+
+		{% if form.phone.errors %} 
+			<div class="card border-danger mb-3" style="max-width: 18rem;">
+  				<div class="card-body text-danger">
+    				<h5 class="card-title">{{ form.phone.errors }}</h5>
+				</div>	
+			</div>
+			{% endif %}
+		
+		<label><h3>Número telefónico</h3></label>
+
+		<div class="form-group input-group">
+
+        	<div class="input-group-prepend">
+            	<span class="input-group-text"> <i class="fa fa-phone"></i> </span>
+        	</div>
+			{{form.phone}}
+		
+		</div> 
+
+<hr>
+
+	<div class="container">
+		{% if form.whatsapp.errors %} 
+			<div class="card border-danger mb-3" style="max-width: 18rem;">
+				<div class="card-body text-danger">
+					<h5 class="card-title">{{ form.whatsapp.errors }}</h5>
+				</div>	
+			</div>
+		{% endif %}
+		<h4>¿Tienes WhatsApp?</h4>
+		<h6>Dejar en blanco si no tienes WhatsApp</h6>
+		<br>
+		<div class="row">
+
+		<div class="col-12 col-lg-7">
+		
+			<label class="form-check form-check-inline card bg2" for="id_{{form.whatsapp.name}}">
+				<input class="form-check-input" type="{{form.whatsapp.field.widget.input_type}}" name="{{form.whatsapp.name}}" id="id_{{form.whatsapp.name}}">
+				<span class="form-check-label col-2"><i class="fab fa-whatsapp fa-2x"></i></span>
+				<h6>Sí tengo WhatsApp</h6>
+			</label>
+
+		</div>	
+	</div>
+	</div>
+<hr>
+
+		<div class="form-group">
+
+			{% if form.price.errors %} 
+			<div class="card border-danger mb-3" style="max-width: 18rem;">
+  				<div class="card-body text-danger">
+    				<h5 class="card-title">{{ form.price.errors }}</h5>
+				</div>	
+			</div>
+			{% endif %}
+
+			<label for="id_{{form.price.name}}"><h3>Precio máximo</h3></label>
+				<div class="input-group col-8  col-md-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="fa fa-dollar-sign"></i></span>
+					
+					<input type="{{form.price.field.widget.input_type}}" name="{{form.price.name}}" class="form-control" min="0" required id="id_{{form.price.name}}">
+				</div> <!-- input-group.// -->
+		</div> <!-- form-group.// -->
+              
+    
+  
+    <br>
+        <div class="form-group">
+        <button type="submit" class="btn btn-success btn-block col-8 offset-2 py-3"> Registrar búsqueda</button>
+    </div> <!-- form-group// -->      
+    <small class="text-muted">Al presionar "Registrar búsqueda" aceptas las <a href="{% url 'privacy' %}">políticas de privacidad </a>
+	y <a href="{% url 'terms' %}"> términos y condiciones </a>del sitio.</small>                                          
+</form>
+
+<script>
+	function preview() {
+		frame.src=URL.createObjectURL(event.target.files[0]);
+	}
+</script>
+
+
+<script>
+    $("#id_estado").change(function () {
+      var url = $("#personForm").attr("load-municipios");  // get the url of the `load_cities` view
+      var estadoId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'estado': estadoId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view functionlog
+		//console.log(data);
+          $("#id_municipio").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+</script>
+
+<script>
+    $("#id_municipio").change(function () {
+      var url = $("#personForm").attr("load-colonias");  // get the url of the `load_cities` view
+      var municipioId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'municipio': municipioId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view functionlog
+		//console.log(data);
+          $("#id_colonia").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+</script>
+
+<script>
+function textCounter(field,field2,maxlimit)
+{
+ var countfield = document.getElementById(field2);
+ if ( field.value.length > maxlimit ) {
+  field.value = field.value.substring( 0, maxlimit );
+  return false;
+ } else {
+  countfield.value = maxlimit - field.value.length;
+ }
+}
+</script>
+
+
+<script>
+	var map = L.map('map').setView([23.6345, -102.5528], 4);
+	var grupoMarcadores = L.layerGroup().addTo(map);
+	
+
+	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	}).addTo(map);
+
+
+	map.on('click', (evento) => {
+		latitud = evento.latlng.lat;
+		longitud = evento.latlng.lng;
+		document.getElementById("id_{{form.latitud.name}}").value = latitud;
+		document.getElementById("id_{{form.longitud.name}}").value = longitud;
+		grupoMarcadores.clearLayers();
+		L.marker([latitud,longitud]).addTo(grupoMarcadores);
+
+	})
+
+	// container for address search results
+	const addressSearchResults = new L.LayerGroup().addTo(map);
+
+	/*** Geocoder ***/
+	// OSM Geocoder
+	const osmGeocoder = new L.Control.geocoder({
+		collapsed: false,
+		position: 'topright',
+		text: 'Search',
+		placeholder: 'Search',
+	defaultMarkGeocode: false
+	}).addTo(map);   
+
+	// handle geocoding result event
+	osmGeocoder.on('markgeocode', e => {
+	// to review result object
+	console.log(e);
+	// coordinates for result
+	const coords = [e.geocode.center.lat, e.geocode.center.lng];
+	// center map on result
+	map.setView(coords, 16);
+	// popup for location
+	// todo: use custom icon
+	// const resultMarker = L.marker(coords).addTo(map);
+	// add popup to marker with result text
+	// resultMarker.bindPopup(e.geocode.name).openPopup();
+ });
+
+
+</script>
+
+</article> <!-- card-body end .// -->
+</div> <!-- card.// -->
+
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Cuartos favoritos{% endblock %}
+{% block content %}
+
+
+<!-- Cada Anuncio-->
+<div class="container-fluid">
+	<div class="row">
+		<a type="button" href="{% url 'fav_person' %}" class="mx-1 col-5 col-md-3 btn btn-outline-info btn-sm text-center text-uppercase">Personas favoritas</a>
+		<a type="button" href="{% url 'fav_room' %}"  class="mx-1 col-5 col-md-3 btn btn-info btn-sm text-center text-uppercase">Cuartos favoritos</a>
+	</div>
+</div>
+
+<br>
+{% if view.fav_rooms|length == 0 %}
+        <h2>No has elegido cuartos como favoritos, pero puedes hacerlo buscando desde  
+            <a href="#" class="btn btn-primary px-1 py-1">aquí</a>
+        .</h2>
+{% else %}
+<div class="container-fluid">
+<div class="row">
+{% for room in view.fav_rooms %}
+
+<div class="card col-12 px-2 py-4 col-md-4 bg2">
+			<div class="container card">
+			<!-- UN RESULTADO PARA SITIO-->
+			<div class="card col-12">
+                <a href="{% url 'room' room.id room.title|slugify %}">
+
+                <!-- IMAGEN -->
+                {% if room.image1  %}
+                <div class=" col-12">
+                    <img src="{{room.image1.url}}" class="img-fluid" alt="Responsive image">
+                </div>
+                {% else %}
+                <div class=" col-12">
+                    <img src="{% static 'core/img/posts/posts_default.png'%}" class="img-fluid" alt="Responsive image">
+                </div>
+                {% endif %}
+       
+                <!-- TÍTULO -->
+                <h5 class="card-title">
+                    {{room.title}}
+                </h5>
+                </a>
+
+                <div class="card-body">
+
+                    <!-- PRECIO -->
+                    <div class="row">
+                        <h4 class="card-title col-6">${{room.price}}</h4>
+
+                        <!-- FAVORITOS (SI NO ESTÁ EN FAVORITOS, ES i class="far fa-heart", SI SÍ ESTÁ EN FAVORITOS ES i class="fas fa-heart") -->
+                            <div class="icontext">
+                                <a onClick="return confirm('¿Estás seguro de eliminar este favorito?'); window.location.reload();" href="{% url 'room_removefav' userid=user.id roomid=room.id%}?next={{ request.build_absolute_uri }}" class="btn" id="favBtn">
+                                    <div class="icon-wrap icon-sm round border">
+                                        <label data-toggle="tooltip" title="" data-original-title="Eliminar de favoritos"><i id="favIcon" class="fas fa-heart"></i></label>
+                                    </div>
+                                </a>
+                            </div>
+
+                    </div>
+
+                    <!-- VISITAS E INTENTOS DE CONTACTO -->
+                    <div class="rating-wrap ">
+                        <div class="label-rating badge-success rounded">{{room.visits}} vistas</div>
+                        <div class="label-rating badge-success rounded">{{room.contacts}} contacto</div>
+                    </div>
+        
+                <!-- COLONIA -->
+                <span class="text-muted"><p><i class="fas fa-map-marker"></i>{{room.zipcode}}</p></span>
+
+                <!-- CREATED -->
+                <p class="card-text"><small class="text-muted">{{room.updated}}</small></p>
+
+            </div><!-- card body -->
+
+		</div>  <!-- card resultado -->
+		</div> <!-- container  -->
+		</div>  <!-- card.// -->
+        <br>
+		
+    
+{% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

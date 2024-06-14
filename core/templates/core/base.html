@@ -1,0 +1,343 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+<meta name="author" content="Qcuarto">
+
+<title>{% block title %}{% endblock %} - Qcuarto</title>
+
+{% load static %}
+
+
+<!-- LeafletJS-->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+crossorigin=""></script>
+
+<link rel="shortcut icon" type="image/x-icon" href="{% static 'core/img/Qcuarto-icono.png'%}"></script>  
+
+<!-- Leaflet control geocoder-->
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+<!-- JQuery  -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+<!-- Bootstrap4 files-->
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<!-- Select2  -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
+
+
+<!-- FontAwesome -->
+<script src="https://kit.fontawesome.com/dbd1c42df9.js" crossorigin="anonymous"></script>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200&display=swap" rel="stylesheet">
+
+
+<!-- custom style -->
+<link href="{% static 'core/css/ui.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'core/css/qcuarto.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'core/css/responsive.css' %}" rel="stylesheet" media="only screen and (max-width: 1200px)" />
+
+<!-- custom javascript -->
+<script src="{% static 'core/js/script.js' %}" type="text/javascript"></script>
+<script src="{% static 'core/js/qcuarto.js' %}" type="text/javascript"></script>
+
+<!-- EasyButton -->
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+<script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+
+
+
+</head>
+
+
+<body>
+
+<div class="mb-3"> <!--  ............HEADER................  -->
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4  bg-white border-bottom shadow-sm bg2">
+  <a href="{% url 'home' %}" class="my-0 mr-md-auto font-weight-normal">
+	<div class="brand-wrap">
+		<img class="logo" src="{% static 'core/img/Qcuarto.png' %}">
+		</div> <!-- brand-wrap.// -->
+  </a>
+  {% if request.user.is_authenticated %}
+
+
+
+  <nav class="my-2 my-md-0 mr-md-3">
+    <a class="p-2 btn btn-outline-info" href="{% url 'find' %}">
+		<i class="fas fa-xs fa-search"></i> Búsqueda
+	</a>
+    <a class="p-2 btn btn-outline-info" href="{% url "posts_general" %}">
+		<i class="fas fa-xs fa-shapes"></i> Mis Anuncios
+	</a>
+	<a class="p-2 btn btn-outline-info" href="{% url 'seen' %}">
+		<i class="fas fa-xs fa-eye"></i> Vistos
+	</a>
+	<a class="p-2 btn btn-outline-info" href="{% url "messages" %}">
+		<i class="fas fa-xs fa-comment-alt"></i> Mensajes
+	</a>
+	<a class="p-2 btn btn-outline-info" href="{% url "fav" %}">
+		<i class="fas fa-xs fa-heart"></i> Favoritos
+	</a>
+  </nav>
+
+  <div class=""> <!-- Seccion Mi Cuenta -->
+	<ul class="menu-category">
+		<li class="has-submenu"> <a href="#" class="text-info">
+		<div class="icontext border-bottom pl-1 widget-header">
+			<i class="far fa-user-circle fa-3x"></i>
+			<i class="fas fa-caret-down pl-1"></i> 
+			 Mi cuenta - {{ user.get_username }}
+		</div></a>
+		<ul class="submenu">
+			<li> <a href="{% url "profile" userid=user.id%}" class="text-info"><b>Mi cuenta - {{ user.get_username }}</b></a></li>
+			<li> <a href="{% url "posts_general" %}" class="text-info">Mis anuncios</a></li>
+			<li> <a href="{% url "messages" %}" class="text-info">Mis mensajes</a></li>
+			<li> <a href="{% url 'seen' %}" class="text-info">Quién me ha visto</a></li>
+			<li> <a href="{% url "fav" %}" class="text-info">Mis favoritos</a></li>
+			<!--<li> <a href="subscription.html" class="text-info">Mi suscripción</a></l i>-->
+			<!--<li> <a href="#" class="text-info">Tips</a></li>
+			<li> <a href="#" class="text-info">Ayuda</a></li>-->
+			<li> <a href="{% url 'account_logout' %}?next={{ request.get_full_path }}" class="text-info"><b>CERRAR SESIÓN</b></a></li>
+		</ul>
+	</ul>
+  </div> <!-- Seccion Mi Cuenta -->
+
+  {% endif %}
+
+	{% if not request.user.is_authenticated %}
+	<nav class="my-2 my-md-0 mr-md-3">
+	<a class="p-2 m-4 btn btn-outline-success" href="{% url 'find' %}">
+		<i class="fas fa-xs fa-search"></i> Búsqueda
+	</a>
+	<a href="{% url 'account_login'%}?next={{ request.get_full_path }}" class="p-2 btn btn-outline-info pull-right" > Ingresar </a> 
+  	</nav>
+  	<a class="btn btn-info pull-right" href="{% url 'account_signup'%}?next={{ request.get_full_path }}">Regístrate</a>
+  	{% endif %}
+	
+</div>
+
+{% if request.user.is_authenticated %}
+
+<!-- AGREGAR ANUNCIOS -->
+{# <section class="bg2"> #}
+
+<div class="container-fluid">
+	<div class="row bg2">
+		<div class="col-12">
+			<div class="alert alert-light text-center my-2 col-8 offset-2" role="alert">
+				<h5><b>AGREGA TU ANUNCIO EN LA PÁGINA</b></h5>
+			</div>
+			<nav class="navbar navbar-expand-sm navbar-light">
+				<a href="{% url 'room_submit' %}" class="col-12 col-sm-6 btn-info py-3 my-1 mx-1 text-center text-uppercase">Publica un cuarto</a>
+				<a href="{% url 'person_submit' %}"  class="col-12 col-sm-6 btn-info py-3 my-1 mx-1 text-center text-uppercase">Publica búsqueda de cuarto</a>
+			</nav>
+		</div>
+	</div>
+</div>
+
+
+{% endif %}
+
+</div><!-- .............. HEADER...............  -->
+
+
+
+{% comment "HEADER ANTIGUO" %}
+<header class="section-header">
+
+
+<section class="header-main bg2">
+	<div class="container-fluid">
+	<div class="row">
+	
+	
+		<!-- LOGO -->
+		<a href="{% url 'home' %}">
+		<div class="col-lg-3 order-1 col-12 mx-auto">
+		<div class="brand-wrap offset-lg-4 ">
+		<img class="logo" src="{% static 'core/img/Qcuarto.png' %}">
+		</div> <!-- brand-wrap.// -->
+		</div>
+		</a>
+
+			{% if not request.user.is_authenticated %}
+
+			<!-- ICONOS -->
+			<div class="col order-2">
+			<div class="justify-content-right">
+
+				<a href="{% url 'account_login'%}" class="btn btn-outline-info pull-right mx-2" > Ingresar </a> 
+
+				<a href="{% url 'account_signup'%}" class="btn btn-info pull-right mx-2"> Regístrate </a>
+			
+
+			</div> <!-- flex.// -->
+		</div> <!-- col.// -->
+
+			{% else %}
+
+		<div class="order-3 order-lg-3"> <!-- Seccion Mi Cuenta -->
+			<ul class="menu-category col-12 col-sm-8">
+				<li class="has-submenu"> <a href="#">
+				<div class="icontext border-bottom pl-1 widget-header">
+					<i class="far fa-user-circle fa-3x"></i>
+					<i class="fas fa-caret-down pl-1"></i> 
+					 Mi cuenta - {{ user.get_username }}
+				</div></a>
+				<ul class="submenu">
+					<li> <a href="{% url "profile" userid=user.id%}"><b>Mi cuenta - {{ user.get_username }}</b></a></li>
+					<li> <a href="{% url "posts_general" %}">Mis anuncios</a></li>
+					<li> <a href="{% url "messages" %}">Mis mensajes</a></li>
+					<li> <a href="{% url 'seen' %}">Quién me ha visto</a></li>
+					<li> <a href="{% url "fav" %}">mis favoritos</a></li>
+					<li> <a href="subscription.html">Mi suscripción</a></li>
+					<!--<li> <a href="#">Tips</a></li>
+					<li> <a href="#">Ayuda</a></li>-->
+					<li> <a href="{% url 'account_logout' %}"><b>CERRAR SESIÓN</b></a></li>
+				</ul>
+			</ul>
+			</div> <!-- Seccion Mi Cuenta -->
+
+			<!-- ICONOS -->
+	<div class="row">
+		<div class="col-lg-19-24 offset-lg-1-24 col-12  order-2  order-lg-2">
+			<div class="d-flex justify-content-center">
+				<a href="{% url 'search' %}" class="widget-header border-left pl-2 ml-2 link-info">
+				<div class="icontext">
+					<div class="icon-wrap icon-sm round border"><label data-toggle="tooltip" title="" data-original-title="Búsqueda"><i class="fas fa-search"></i></label></div>
+					</div>
+				Búsqueda
+				</a>
+	</div> <!-- widgets-wrap.// -->
+		</div> <!-- col.// -->
+			</div> <!-- row.// -->
+
+	<div class="row">
+		<div class="col-lg-19-24 offset-lg-1-24 col-12  order-4  order-lg-4">
+			<div class="d-flex justify-content-center">
+			<a href="{% url "posts_general" %}" class="widget-header border-left pl-2 ml-2">
+				<div class="icontext">
+					<div class="icon-wrap icon-sm round border"><label data-toggle="tooltip" title="" data-original-title="Mis anuncios"><i class="fas fa-shapes"></i></label></div>
+				</div>
+				Mis anuncios
+			</a>
+
+			<a href="{% url 'seen' %}" class="widget-header border-left pl-2 ml-2">
+				<div class="icontext">
+					<div class="icon-wrap icon-sm round border"><label data-toggle="tooltip" title="" data-original-title="Quién ha visto mis anuncios"><i class="far fa-eye"></i></label></div>
+				</div>
+				
+				Vistos
+			</a>
+
+
+
+
+			<a href="{% url "messages" %}" class="widget-header border-left pl-2 ml-2">
+				<div class="icontext">
+					<div class="icon-wrap icon-sm round border"><label data-toggle="tooltip" title="" data-original-title="Mis mensajes e interés"><i class="fas fa-comment-alt"></i></label></div>
+				</div>
+				
+				Mensajes
+			</a>
+
+			<a href="{% url "fav" %}" class="widget-header border-left pl-2 ml-2">
+				<div class="icontext">
+					<div class="icon-wrap icon-sm round border"><label data-toggle="tooltip" title="" data-original-title="Mis favoritos"><i class="fas fa-heart"></i></label></div>
+				</div>
+				
+				Favoritos
+			</a>
+
+
+			
+
+			</div> <!-- widgets-wrap.// -->
+	</div> <!-- col.// -->
+	</div> <!-- row.// -->
+</div> <!-- row.// -->
+					
+				{% endif %}
+				
+		
+	</div> <!-- container.// -->
+</section> <!-- header-main .// -->
+
+{% if request.user.is_authenticated %}
+
+<!-- AGREGAR ANUNCIOS -->
+{# <section class="bg2"> #}
+<section>
+<div class="container">
+	<div class="row bg2">
+		<div class="col-12">
+			<nav class="navbar navbar-expand-sm navbar-light">
+				<a href="{% url 'room_submit' %}" class="col-12 col-sm-6 btn-info py-3 my-1 mx-1 text-center text-uppercase">Tengo un cuarto</a>
+				<a href="{% url 'person_submit' %}"  class="col-12 col-sm-6 btn-info py-3 my-1 mx-1 text-center text-uppercase">Busco un cuarto</a>
+			</nav>
+		</div>
+	</div>
+</div>
+</section>
+
+{% endif %}
+
+</header> <!-- section-header.// -->
+{% endcomment %}
+
+
+
+<br>
+
+{% block content %}{% endblock %}
+
+
+
+<br><br>
+
+<footer class="section-footer bg2 ">
+	<div class="container">
+		<section class="footer-bottom row">
+			<div class="col"> 
+				<a href="{% url 'about' %}"><p> Sobre nosotros <i class="fas fa-hand-spock"></i></a>
+				<a href="{% url 'contact' %}"><p> Feedback y contacto <i class="fas fa-phone"></i></a>
+				<a href="{% url 'privacy' %}">Aviso de Privacidad y Legal <i class="fas fa-lock"></i><i class="fas fa-scroll"></i> </a>
+				<a href="{% url 'terms' %}"><p> Términos y condiciones <i class="fas fa-file-contract"></i></a>
+				<br>
+			</div>
+			<div class="col">
+				<p class="text-sm-right">
+					Copyright {% now 'Y' %} 
+					<br>
+				</p>
+			</div>
+		</section> <!-- //footer-top -->
+	</div><!-- //container -->
+</footer>
+<!-- ========================= FOOTER END // ========================= -->
+
+
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}postperson.title{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+
+  <div class="row">
+    <!-- Users box-->
+    <div class="offset-1 col-10 px-0">
+      <div class="bg-white">
+
+        <div class="messages-box">
+          <div class="list-group rounded-0">
+
+
+      {% for thread in request.user.threads.all %}
+        {% if thread.messages.all|length > 0 %}
+        
+
+          {% for user in thread.users.all %}
+            {% if user != request.user %} 
+
+            <a href="{% url 'chat' thread.pk %}" class="btn-outline-primary list-group-item list-group-item-action rounded-0 my-1">
+              <div class="media">
+                <div class="media-body ml-4">
+                  <div class="d-flex align-items-center justify-content-between mb-1">
+                    <h6 class="mb-0"><b>{{user}}</b></h6><small class="small font-weight-bold">{{thread.messages.last.created|timesince}}</small>
+                  </div>
+                </div>
+              </div>
+            </a>
+
+            {% endif %}
+          {% endfor %}
+            
+        {% endif %}
+      {% endfor %}
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

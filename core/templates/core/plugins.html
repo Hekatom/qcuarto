@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+<meta name="author" content="Bootstrap-ecommerce by Vosidiy">
+
+<title>{% block title %}{% endblock %} - Qcuarto</title>
+
+{% load static %}
+
+<link rel="shortcut icon" type="image/x-icon" href="{% static 'core/img/Qcuarto-icono.png'%}"></script>  
+
+<!-- Select2  -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+	<!-- Bootstrap4 files-->
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+
+<!-- FontAwesome -->
+<script src="https://kit.fontawesome.com/dbd1c42df9.js" crossorigin="anonymous"></script>
+
+
+<!-- custom style -->
+<link href="{% static 'core/css/ui.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'core/css/responsive.css' %}" rel="stylesheet" media="only screen and (max-width: 1200px)" />
+<link href="{% static 'core/css/intlTelInput.min.css' %}" rel="stylesheet" type="text/css">
+
+<!-- custom javascript -->
+<script src="{% static 'core/js/script.js' %}" type="text/javascript"></script>
+<script src="{% static 'core/js/intlTelInput.js' %}" type="text/javascript"></script>
+
+<script type="text/javascript">
+/// some script
+
+// jquery ready start
+$(document).ready(function() {
+	// jQuery code
+	rtl:true
+}); 
+// jquery end
+</script>
+
+<!-- plugin: owl carousel  -->
+<link href="{% static 'core/plugins/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+<link href="{% static 'core/plugins/owlcarousel/assets/owl.theme.default.css' %}" rel="stylesheet">
+<script src="{% static 'core/plugins/owlcarousel/owl.carousel.min.js' %}"></script>
+
+
+
+</head>
+
+
+<body>
+
+<br>
+{% block content %}{% endblock %}
+
+<br><br>
+<footer class="section-footer bg2 ">
+	<div class="container">
+		<section class="footer-bottom row">
+			<div class="col-sm-6"> 
+				<a href="{% url 'about' %}"><p> Sobre nosotros <i class="fas fa-hand-spock"></i></p></a>
+				<a href="{% url 'contact' %}"><p> Feedback y contacto <i class="fas fa-phone"></i></p></a>
+				<a href="{% url 'privacy' %}">Aviso de Privacidad y Legal <i class="fas fa-lock"></i><i class="fas fa-scroll"></i> </p></a>
+				<a href="{% url 'terms' %}"><p> Términos y condiciones <i class="fas fa-file-contract"></i></p></a>
+				<br>
+			</div>
+			<div class="col-sm-6">
+				<p class="text-sm-right">
+Copyright &copy 2020 <br>
+
+				</p>
+			</div>
+		</section> <!-- //footer-top -->
+	</div><!-- //container -->
+</footer>
+<!-- ========================= FOOTER END // ========================= -->
+
+
+</body>
+
+<script>
+    var input = document.querySelector("#phone");
+    window.intlTelInput(input, {
+      // allowDropdown: false,
+      // autoHideDialCode: false,
+      // autoPlaceholder: "off",
+      // dropdownContainer: document.body,
+      // excludeCountries: ["us"],
+      // formatOnDisplay: false,
+      // geoIpLookup: function(callback) {
+      //   $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+      //     var countryCode = (resp && resp.country) ? resp.country : "";
+      //     callback(countryCode);
+      //   });
+      // },
+      // hiddenInput: "full_number",
+      // initialCountry: "auto",
+      // localizedCountries: { 'de': 'Deutschland' },
+      // nationalMode: false,
+      // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
+      // placeholderNumberType: "MOBILE",
+      // preferredCountries: ['cn', 'jp'],
+      // separateDialCode: true,
+      utilsScript: "build/js/utils.js",
+    });
+  </script>
+
+</html>

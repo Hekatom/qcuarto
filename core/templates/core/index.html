@@ -1,0 +1,368 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Qcuarto - Búsqueda de cuartos simple y barata{% endblock %}
+
+{% block room_searchbar %}
+{% endblock room_searchbar %}
+
+
+{% block content %}
+
+
+
+<div class="row">
+<div class="col-12 col-md-4 col-lg-6">
+<div class="img-wrapper">
+	<img class="img-responsive"src="{% static 'core/img/cuartoindex.jpg' %}">
+	<div class="img-overlay row">
+		<div class="col">
+			<div class="textbox-bg">
+				<h1 class="display-4 text-light">Encuentra tu cuarto en la ubicación ideal!!</h1>
+				<p class="lead text-light">¡Empieza por buscar arrastrando el Mapa o buscando manualmente la ciudad de tu interés!</p>
+				<hr class="my-4">
+			</div>
+		</div> <!--col-6-->
+	</div>
+</div><!--img-wrapper-->
+</div><!--col-->
+
+	<div class="jumbotron col-12 col-md-8 col-lg-6">
+
+		<h4>Si arrastras el mapa, al encontrar tu zona de interés, da click en  "<i class="fa fa-search-location black"></i>  Encontrar cuarto!" debajo del mapa </h4>
+		<div id="map" class="col-12" style="height:400px"></div>
+		<button class="btn btn-primary col-12" id="actualizarBtn" disabled onclick="ActualizarPag()"><i class="fa-2x fa fa-search-location white"></i>  Encontrar cuarto!</button>
+		<input type="hidden" id="urlNueva" value="">
+
+		
+
+
+
+	</div>
+
+</div><!--row-->
+
+
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-12">
+			<nav class="navbar navbar-expand-sm navbar-light">
+				<a href="{% url 'room_submit' %}" class="col-12 col-sm-6 btn-info py-3 my-1 mx-1 text-center text-uppercase">Tengo un cuarto</a>
+				<a href="{% url 'person_submit' %}"  class="col-12 col-sm-6 btn-info py-3 my-1 mx-1 text-center text-uppercase">Busco un cuarto</a>
+			</nav>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+
+
+ 
+
+<!-- ========================= SECTION MAIN ========================= -->
+<section class="section-main bg padding-bottom">
+<div class="container">
+<div class="row no-gutters border border-top-0 bg-white">
+<main class="col-lg-19-24">
+<!-- ========= intro aside ========= -->
+<div class="row no-gutters">
+	<div class="col-lg-9 col-md-8">
+<!-- ================= Imagen en lo que funciona la siguiente ================= -->
+<img src="{% static 'core/img/banners/home.jpg' %}" class="img-fluid" alt="Responsive image">
+
+
+<!-- ========================= ESTADISTICAS ========================= -->
+	</div> <!-- col.// -->
+	<div class="offset-1 col-lg-2 col-md-3">
+
+		<div class="card border-0 my-1">
+			<figure class="itemside">
+				<div class="aside">
+					<div class="img-wrap img-sm bg-warning"><i class="center-xy fa-3x fa fa-users white"></i></div>
+				</div>
+				<figcaption class="text-wrap">
+					<h6 class="title mt-3">Usuarios utilizando Qcuarto </h6>
+					<h4> {{user_amt}} </h4>
+				</figcaption>
+			</figure>
+		</div> <!-- card.// -->
+
+		<div class="card border-0 my-1">
+<figure class="itemside">
+	<div class="aside">
+		<div class="img-wrap img-sm bg-warning"><i class="center-xy fa-3x fa fa-newspaper white"></i></div>
+	</div>
+	<figcaption class="text-wrap">
+		<h6 class="title mt-3">Sitios listados en Qcuarto </h6>
+		<h4> {{total_amt}} </h4>
+	</figcaption>
+</figure>
+</div> <!-- card.// -->
+
+
+		<div class="card border-0 my-1">
+<figure class="itemside">
+	<div class="aside">
+		<div class="img-wrap img-sm bg-info"><i class="center-xy fa-3x fa fa-search-location white"></i></div>
+	</div>
+	<figcaption class="text-wrap">
+		<h6 class="title mt-3">Inquilinos buscando cuartos</h6>
+		<h4>{{person_amt}}</h4>
+	</figcaption>
+</figure>
+</div> <!-- card.// -->
+
+
+		<div class="card border-0 my-1">
+<figure class="itemside">
+	<div class="aside">
+		<div class="img-wrap img-sm bg-info"><i class="center-xy fa-3x fa fa-bed white"></i></div>
+	</div>
+	<figcaption class="text-wrap">
+		<h6 class="title mt-3">Arrendadores ofreciendo cuartos</h6>
+		<h4>{{room_amt}}</h4>
+	</figcaption>
+</figure>
+</div> <!-- card.// -->
+	</div> <!-- col.// -->
+</div> <!-- row.// -->
+<!-- ======== intro aside ========= .// -->
+</main> <!-- col.// -->
+</div> <!-- row.// -->
+</div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION MAIN END// ========================= -->
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+<div class="container">
+
+
+<header class="section-heading">
+<h2 class="title-section"><b>La búsqueda de cuartos más precisa... y barata</b></h2>
+</header>
+
+<article>
+<p>Nunca se había visto un sitio que ofreciera tantos filtros al momento de buscar tu cuarto ideal, nunca se había visto un sitio en el que la membresía fuera tan asequible. Pero ahora estamos aquí, en Q-cuarto lo que queremos es que si buscas un cuarto desde la primera encuentres lo que buscas, y si ofreces un cuarto, en cuestión de horas encuentres al roomie perfecto.</p>
+<br>
+
+
+
+</article>
+
+
+</div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+<div class="container-fluid">
+<div class="row">
+
+		
+	<div class="col-12 col-md-6">
+		<a href="{% url 'find_room' %}" class="stretched-link">
+		<div class="card bg2">
+			<div class="card-body">
+				<h2 class="card-title">Encuentra cuarto</h2>
+			</div>
+			<img src="{% static 'find/room_find.jpg' %}" class="card-img-top img-responsive" alt="Qcuarto cuarto busqueda">
+		</div>
+		</a>
+	</div>
+	
+	<br>
+	<br>
+
+	<div class="col-12 col-md-6">
+		<a href="{% url 'find_person' %}" class="stretched-link">
+		<div class="card bg2">
+			<div class="card-body">
+				<h2 class="card-title">Encuentra roomie</h2>
+			</div>
+			<img src="{% static 'find/person_find.jpg' %}" class="card-img-top img-responsive" alt="Qcuarto cuarto busqueda">
+		</div>
+		</a>
+	  </div>
+
+</div>
+</div>
+</div>
+
+<script>
+
+
+ 
+	function getCurrentURL () {
+		return window.location.href
+	  }
+
+	
+	function guardarURL (url_guardar) {
+		new_url = url_guardar
+		return new_url
+	  }
+	
+
+
+	  
+	var url_str = getCurrentURL(); //url actual
+	var url = new URL(url_str); //convertir a URL
+	var search_params = url.searchParams; //obtener parametros GET
+
+	if (search_params.has('lat_centro') && search_params.has('lon_centro') && search_params.has('nivel_zoom')) {
+
+		lat_centro = search_params.get("lat_centro");
+		lon_centro = search_params.get("lon_centro");
+		nivel_zoom = search_params.get("nivel_zoom");
+		//console.log(lat_centro, lon_centro, nivel_zoom);
+
+		var map = L.map('map').setView([lat_centro, lon_centro], nivel_zoom);
+	} else {
+		var map = L.map('map').setView([23.6345, -102.5528], 6);
+	  }
+
+
+	var grupoMarcadores = L.layerGroup().addTo(map);
+	
+
+	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		minZoom:5,
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	}).addTo(map);
+
+	//Popups y marcadores
+ 
+
+	map.on('moveend', function(e) {
+		nivel_zoom = e.target._zoom;
+		centroObj = map.getCenter();
+		centro = Object.values(centroObj)
+		lat_centro = centro[0]
+		lon_centro = centro[1]
+		limObj = map.getBounds();
+		limites = Object.values(limObj);
+		noreste = limites[1];
+		suroeste = limites[0];
+		norte = noreste.lat;
+		sur = suroeste.lat;
+		este = noreste.lng;
+		oeste = suroeste.lng;
+		console.log(nivel_zoom,lat_centro,lon_centro,norte,sur,este,oeste)
+
+
+		// Actualizar URL
+		var url_str = getCurrentURL(); //url actual
+		var url = new URL(url_str); //convertir a URL
+		console.log(url);
+		orig = url.origin;
+		find_path = "{% url 'find_room' %}";
+		url.pathname = find_path;
+		var search_params = url.searchParams; //obtener parametros GET
+		search_params.set('norte', norte); //cambiar o agregar parametros
+		search_params.set('sur', sur);
+		search_params.set('este', este);
+		search_params.set('oeste', oeste);
+		search_params.set('lat_centro', lat_centro);
+		search_params.set('lon_centro', lon_centro);
+		search_params.set('nivel_zoom', nivel_zoom);
+		url.search = search_params.toString();
+		var new_url = url.toString();
+		console.log(new_url);
+
+		var btn = document.getElementById("actualizarBtn").disabled = false;
+		document.getElementById("urlNueva").value = new_url;
+		console.log("input actualizado");
+		guardarURL(new_url);
+
+		//window.location.href = new_url;
+
+		
+   });
+
+
+	// container for address search results
+	const addressSearchResults = new L.LayerGroup().addTo(map);
+
+	/*** Geocoder ***/
+	// OSM Geocoder
+	const osmGeocoder = new L.Control.geocoder({
+		collapsed: false,
+		position: 'topright',
+		text: 'Search',
+		placeholder: 'Search',
+	defaultMarkGeocode: false
+	}).addTo(map);   
+
+	// handle geocoding result event
+	osmGeocoder.on('markgeocode', e => {
+	// to review result object
+	console.log(e);
+	// coordinates for result
+	const coords = [e.geocode.center.lat, e.geocode.center.lng];
+	// center map on result
+	
+	centroObj = map.getCenter();
+		nivel_zoom = 11;
+		centro = Object.values(centroObj)
+		lat_centro = centro[0]
+		lon_centro = centro[1]
+		limObj = map.getBounds();
+		limites = Object.values(limObj);
+		noreste = limites[1];
+		suroeste = limites[0];
+		norte = noreste.lat;
+		sur = suroeste.lat;
+		este = noreste.lng;
+		oeste = suroeste.lng;
+		console.log(nivel_zoom,lat_centro,lon_centro,norte,sur,este,oeste)
+
+
+		// Actualizar URL
+		var url_str = getCurrentURL(); //url actual
+		var url = new URL(url_str); //convertir a URL
+		console.log(url);
+		orig = url.origin;
+		find_path = "{% url 'find_room' %}";
+		url.pathname = find_path;
+		var search_params = url.searchParams; //obtener parametros GET
+		search_params.set('norte', norte); //cambiar o agregar parametros
+		search_params.set('sur', sur);
+		search_params.set('este', este);
+		search_params.set('oeste', oeste);
+		search_params.set('lat_centro', lat_centro);
+		search_params.set('lon_centro', lon_centro);
+		search_params.set('nivel_zoom', nivel_zoom);
+		url.search = search_params.toString();
+		var new_url = url.toString();
+
+		document.getElementById("urlNueva").value = new_url;
+
+		ActualizarPag();
+
+
+	map.setView(coords, 11);
+	ActualizarPag();
+	// popup for location
+	// todo: use custom icon
+	// const resultMarker = L.marker(coords).addTo(map);
+	// add popup to marker with result text
+	// resultMarker.bindPopup(e.geocode.name).openPopup();
+ });
+
+{% comment %} L.easyButton('fa-redo fa-lg', function(btn, map)){
+	window.location.href = new_url;
+}.addTo(map); {% endcomment %}
+ 
+function ActualizarPag(){
+	if (document.getElementById("actualizarBtn").disabled == false){
+		nueva_url = document.getElementById("urlNueva").value;
+		window.location.href = nueva_url;
+	}
+}
+
+</script>
+
+{% endblock %}
+

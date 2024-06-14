@@ -1,0 +1,19 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Favoritos{% endblock %}
+{% block content %}
+
+
+
+<!-- RESULTADOS PARA ANUNCIOS-->
+
+<div class="container-fluid">
+	<div class="row">
+		<a type="button" href="{% url 'fav_person' %}" class="mx-1 col-5 col-md-3 btn btn-outline-info btn-sm text-center text-uppercase">Personas favoritas</a>
+		<a type="button" href="{% url 'fav_room' %}"  class="mx-1 col-5 col-md-3 btn btn-outline-info btn-sm text-center text-uppercase">Cuartos favoritos</a>
+	</div>
+</div>
+
+<br>
+
+{% endblock %}

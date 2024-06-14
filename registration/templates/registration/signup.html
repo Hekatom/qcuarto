@@ -1,0 +1,90 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Iniciar sesión{% endblock %}
+{% block content %}
+
+
+<div class="card offset-md-4 col-md-4 mt-5 bg2">
+<article class="card-body">
+    <a href="login.html" class="float-right btn btn-outline-primary">Ya tengo una cuenta <i class="fas fa-sign-in-alt"></i> </a>
+    <h4 class="card-title mb-4 mt-1">Registro</h4>
+    <!-- Social login, para despues
+    <p>
+        <a href="" class="btn btn-block btn-facebook"> <i class="fab fa-facebook-f"></i> &nbsp; Registro via Facebook</a>
+        <a href="" class="btn btn-block btn-danger"> <i class="fab fa-google"></i> &nbsp; Registro via Google</a>
+    </p> -->
+    <hr>
+    <h3 class="text-center">Ó...</h3>
+    <hr>
+    <p class="small">* Todos los campos son obligatorios *</p>
+    
+   <!-- form copiada de internet 
+    <form method="post" novalidate>
+  {% csrf_token %}
+
+  {% for hidden_field in form.hidden_fields %}
+    {{ hidden_field }}
+  {% endfor %}
+
+  {% for field in form.visible_fields %}
+    <div class="form-group">
+      {{ field.label_tag }}
+      {{ field }}
+      {% if field.help_text %}
+        <small class="form-text text-muted">{{ field.help_text }}</small>
+      {% endif %}
+    </div>
+  {% endfor %}
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form> -->
+
+    <form action="" method="post">
+    {% csrf_token %}
+    
+    <div class="form-group input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+         </div>
+         {{form.username}}
+        {# <input type="text" name="username" class="form-control" placeholder="Nombre o apodo" maxlength="120" required id="id_username"> #}
+    </div> <!-- form-group// -->
+
+    <div class="form-group input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+         </div>
+         {{form.email}}
+        {# <input type="email" name="email" class="form-control" placeholder="Email" maxlength="254" required id="id_email"> #}
+    </div> <!-- form-group// -->
+
+    <!--<div class="form-group input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text"> <i class="fa fa-phone"></i> </span>
+        </div>
+        {{form.phone}}
+         {#    <input type="text" name="phone_0" class="form-control" placeholder="Numero de telefono a 10 dígitos" size="13" required id="id_phone_0"> #}
+    </div>  form-group-phone//  -->
+
+    <div class="form-group input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+        </div>
+        {{form.password1}}
+        {# <input type="password" name="password1" class="form-control" placeholder="Contraseña" maxlength="50" required id="id_password1"> #}
+    </div> <!-- form-group// -->
+    <div class="form-group input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+        </div>
+        {{form.password2}}
+        {# <input type="password" name="password2" class="form-control" placeholder="Repita contraseña" maxlength="50" required id="id_password2"> #}
+    </div> <!-- form-group// -->                                      
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block"> Crear Cuenta  </button>
+    </div> <!-- form-group// -->      
+</form>
+</article>
+</div> <!-- card.// -->
+
+{% endblock %}

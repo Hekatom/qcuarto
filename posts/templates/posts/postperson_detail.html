@@ -1,0 +1,443 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}{{postperson.name}}-Qcuarto{% endblock %}
+{% block content %}
+
+ <br>
+ <br>
+<br>
+<section class="container ">
+		{% if user.id == postperson.author.id %}
+		<div class="row">
+			<div class="col offset-4 offset-md-9">
+				<p>
+					<a href="{% url 'person_update' postperson.id %}" class="btn btn-warning my-2"><i class="fas fa-feather"></i> Editar </a>
+				</p>
+			</div><!--col-->
+	</div><!--row-->
+		{% endif %}
+	<div class="row">
+			<div class="col">
+				<h1>{{postperson.name}}</h1>
+			</div>
+			<!-- FAVORITOS (SI NO ESTÁ EN FAVORITOS, ES i class="far fa-heart", SI SÍ ESTÁ EN FAVORITOS ES i class="fas fa-heart") -->
+                        {% if user.is_authenticated %}
+						{% if postperson in personfav %}
+						
+						<div class="icontext">
+                                <a onClick="return confirm('¿Estás seguro de eliminar este favorito?'); window.location.reload();" href="{% url 'person_removefav' userid=user.id personid=postperson.id%}?next={{ request.build_absolute_uri }}" class="btn" id="favBtn">
+                                    <div class="icon-wrap icon-sm round border">
+                                        <label data-toggle="tooltip" title="" data-original-title="Eliminar de favoritos"><i id="favIcon" class="fas fa-heart"></i></label>
+                                    </div>
+                                </a>
+                        </div>
+
+						{% else %}
+
+						<div class="icontext">
+                                <a href="{% url 'person_addfav' userid=user.id personid=postperson.id%}?next={{ request.build_absolute_uri }}" class="btn" id="favBtn">
+                                    <div class="icon-wrap icon-sm round border">
+                                        <label data-toggle="tooltip" title="" data-original-title="Agregar a favoritos"><i id="favIcon" class="far fa-heart"></i></label>
+                                    </div>
+                                </a>
+                        </div>
+
+						{% endif %}
+							
+						{% else %}
+							<div class="icontext">
+                                <a href="{% url 'account_login' %}" class="btn">
+                                    <div class="icon-wrap icon-sm round border">
+                                        <label data-toggle="tooltip" title="" data-original-title="Agregar a favoritos"><i class="far fa-heart"></i></label>
+                                    </div>
+                                </a>
+                        	</div>						
+						{% endif %}
+		</div>
+</section>
+<br>
+<br>
+<!-- ========================= SECTION MAIN ========================= -->
+<section class="section-main padding-bottom">
+<div class="container">
+    <div class="row border border-top-0 border-bottom-0 bg-white ">
+<!-- ================= imagee ================= -->
+	{% if postperson.image %}
+	<div class=" col-12 col-lg-10 offset-lg-1">
+        <img src="{{postperson.image.url}}" class="img-fluid" alt="Qcuarto-{{postperson.title}}">
+	</div>
+	{% endif %}
+<!-- ============== image .end // ============= -->
+</div> <!-- col.// -->
+</div> <!-- container .//  -->
+</section>
+
+<!-- ========================= PRECIO ========================= -->
+
+<section class="section-content padding-y">
+<div class="container">
+<article>
+<header class="section-heading">
+<h5 class="title-section">Precio y costos</h5>
+</header>
+<div class="row">
+	<div class="card bg2 mx-2 my-2 py-2 col-6 col-md-2">
+		<span class="form-check-label">
+		    <i class="fas fa-dollar-sign fa-2x"></i>
+		<h4>${{postperson.price}}</h4> <h6> Precio máximo.</h6>
+		</span>
+	</div>
+
+</div>
+</article>
+</div>
+</section>
+
+
+<!-- ========================= UBICACION	 ========================= -->
+
+<section class="section-content padding-y">
+<div class="container">
+<article>
+<header class="section-heading">
+<h5 class="title-section">Ubicación</h5>
+</header>
+{% comment %} <div class="row">
+	<div class="card bg2 mx-2 my-2 py-2 col-6 col-md-2">
+		<span class="form-check-label">
+		    <i class="fas fa-map-marker fa-2x"></i>
+			<hr>
+		<h6>Estado:</h6> <h4> {{postperson.estado}}</h4>
+		<hr>
+		<h6>Municipio:</h6> <h4> {{postperson.municipio}}</h4>
+		<hr>
+		<h6>Código Postal:</h6> <h4> {{postperson.cp}}</h4>
+		<hr>
+		<h6>Colonia:</h6> <h4> {{postperson.colonia}}</h4>
+		</span>
+	</div>
+
+</div> {% endcomment %}
+
+<div class="card bg2 mx-2 my-2 py-2 col-12 col-md-8 ">
+	<div id="map" style="height: 400px; width: 400px;"></div>
+</div>
+
+</article>
+</div>
+</section>
+
+<!-- ========================= SECTION MAIN END// ========================= -->
+
+<section class="section-content padding-y">
+<div class="container">
+<article>
+<header class="section-heading">
+<h5 class="title-section">Descripción</h5>
+</header>
+<p>{{postperson.description|linebreaks}}</p>
+</article>
+<div class="card bg2 mx-2 my-2 py-2 col-6 col-md-4">
+			<span class="form-check-label col-2"><i class="fas fa-users fa-2x"></i></span>
+			<h6>{{postperson.amount}} Personas</h6>
+</div>
+</div>
+</section>
+<!-- ========================= CONTACTO ========================= -->
+
+<section class="section-content padding-y">
+<div class="container">
+<article>
+<header class="section-heading">
+<h5 class="title-section">Contacto con el inquilino</h5>
+</header>	
+<div class="row">
+<!-- Button trigger modal -->
+<button onclick="location.href='{% url 'contact' "person" postperson.id %}?next=';" class="btn btn-primary col-5 col-md-3" data-toggle="modal" data-target="#phoneModal">
+		<span class="form-check-label"><i class="fas fa-phone fa-2x"></i><h6>Teléfono</h6>
+</button>
+
+{% if postperson.whatsapp %}
+<a target="_blank" class="btn offset-1 btn-success col-5 col-md-3" onclick="location.href='{% url 'contact' "person" postperson.id %}?next=';" href="https://wa.me/{{ postperson.phone|stringformat:"s"|slice:"1:"}}?text=%C2%A1Hola%21+Vi+tu+perfil%3A%0D%0Ahttps://qcuarto.com{% url 'person' postperson.id postperson.name|slugify %}%0D%0AEn+Qcuarto%2C+y+me+interesa.+%C2%BFPodr%C3%ADas+darme+m%C3%A1s+detalles%3F">
+	<span class="form-check-label"><i class="fab fa-whatsapp fa-2x"></i><h6>Enviar WhatsApp</h6>
+</a>
+{% endif %}
+
+<!-- Modal -->
+<div class="modal fade" id="phoneModal" tabindex="-1" role="dialog" aria-labelledby="phoneModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="phoneModalLabel"><span class="form-check-label"><i class="fas fa-phone fa-2x"></i>Teléfono</h5>
+      </div>
+      <div class="modal-body">
+	  Número de teléfono (formato internacional): 
+	  <a href="tel:{{postperson.phone}}"><h3>{{postperson.phone}}</h3></a>
+	  <h5> ¡Haga click en el número para llamar! </h5>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal">Listo!!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% if user.id != postperson.author.id %}
+    {# Botón mandar mensaje #}
+	<a href="{% url 'contact' "person" postperson.id %}?next={% url 'start_chat' postperson.author.id %}" type="button" class="btn btn-dark col-5 col-md-3 offset-1" id="contactBtn">
+		<span class="form-check-label"><i class="far fa-comment-alt fa-2x"></i><h6>Mandar mensaje</h6>
+	</a>
+{% endif %}
+</div><!--row-->
+</article>
+</div>
+</section>
+
+
+<section class="section-content padding-y">
+<div class="container">
+<article>
+<header class="section-heading">
+<h5 class="title-section">Características del inquilino</h5>
+</header>	
+<div class="row">
+	
+	{% if postperson.gender == 'hombre' %}
+	<div class="card bg2 mx-2 my-2 py-2 col-6 col-md-4">
+		<span class="form-check-label"><i class="fas fa-mars fa-2x"></i><h6>Hombre</h6></span>
+	</div>
+	{% endif %}
+
+	{% if postperson.gender == 'mujer' %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label"><i class="fas fa-venus fa-2x"></i><h6>Mujer</h6></span>
+	</div>
+	{% endif %}
+
+	{% if postperson.gender == 'otro' %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		 <span class="form-check-label"><i class="fas fa-venus-mars fa-2x"></i><h6>Cualquier género</h6></span>
+	</div>
+	{% endif %}
+
+    {% if postperson.gender == 'mixto' %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		 <span class="form-check-label"><i class="fas fa-venus-mars fa-2x"></i><h6>Mixto</h6></span>
+	</div>
+	{% endif %}
+
+	{% if postperson.smokes == True %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label"><i class="fas fa-smoking fa-2x"></i><h6>Fuma</h6></span>
+	</div>
+	{% endif %}
+
+	{% if postperson.smokes == False %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label"><i class="fas fa-smoking-ban fa-2x"></i><h6>NO Fuma</h6></span>
+	</div>
+	{% endif %}
+
+	<div class="card bg2 mx-2 my-2 py-2 col-6 col-md-4">
+			<span class="form-check-label col-2"><i class="fas fa-users fa-2x"></i></span>
+			<h6>{{postperson.amount}} Personas</h6>
+	</div>
+
+<br></article>
+</div> <!-- container .//  -->
+</section>
+
+
+
+<!-- ========================= AMENIDADES ========================= -->
+<section class="section-content padding-y">
+<div class="container">
+<article>
+<header class="section-heading">
+<h5 class="title-section">Amenidades qué busca...</h5>
+</header>	
+<div class="row">
+
+	{% if 'servicios' in postperson.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-6 col-md-4">
+		<span class="form-check-label">
+				    <i class="fas fa-bolt fa-2x"></i>
+				    <i class="fas fa-tint fa-2x"></i>
+				    <i class="fas fa-fire fa-2x"></i>
+				    
+				  </span>
+				  <h6>Servicios incluidos</h6>
+	</div>
+	{% endif %}
+	
+	{% if 'wifi' in postperson.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-wifi fa-2x"></i>
+				  </span>
+				  <h6>WiFi</h6>
+	</div>
+	{% endif %}
+
+	{% if 'estacionamiento' in postperson.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		 <span class="form-check-label">
+				    <i class="fas fa-car fa-2x"></i>
+				  </span>
+				  <h6>Parking</h6>
+	</div>
+	{% endif %}
+
+	{% if 'limpieza' in postperson.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-bperson fa-2x"></i>
+				  </span>
+				  <h6>Limpieza incluida</h6>
+	</div>
+	{% endif %}
+
+	{% if 'gym' in postperson.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-dumbbell fa-2x"></i>
+		</span>
+		<h6>Gym</h6>
+	</div>
+	{% endif %}
+	
+	{% if 'elevador' in postperson.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-caret-square-up fa-2x"></i>
+					<i class="fas fa-caret-square-down fa-2x"></i>
+				    
+				  </span>
+				  <h6>Elevador</h6>
+	</div>
+	{% endif %}
+
+	{% if 'bano' in postperson.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-toilet fa-2x"></i>
+				    
+				  </span>
+				  <h6>Baño privado</h6>
+	</div>
+	{% endif %}
+
+	{% if 'facturacion' in postperson.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-file-invoice-dollar fa-2x"></i>
+				    
+				  </span>
+				  <h6>Facturación</h6>
+	</div>
+	{% endif %}
+
+	{% if 'cocina' in postperson.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-blender fa-2x"></i>
+				    
+				  </span>
+				  <h6>Acceso a cocina</h6>
+	</div>
+	{% endif %}
+
+	{% if 'comida' in postperson.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-hamburger fa-2x"></i>
+				    
+				  </span>
+				  <h6>Preparación de comidas</h6>
+	</div>
+	{% endif %}
+
+	{% if 'mascotas' in postperson.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-paw fa-2x"></i>
+				    
+				  </span>
+				  <h6>Pet friendly</h6>
+	</div>
+	{% endif %}
+
+	{% if 'visitas' in postperson.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-users fa-2x"></i>
+				    
+				  </span>
+				  <h6>Acepten visitas</h6>
+	</div>
+	{% endif %}
+
+	{% if 'infantes' in postperson.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-baby fa-2x"></i>
+				    
+				  </span>
+				  <h6>Acepten infantes</h6>
+	</div>
+	{% endif %}
+
+	{% if 'lavadora' in postperson.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-tshirt fa-2x"></i>
+				    
+				  </span>
+				  <h6>Lavadora</h6>
+	</div>
+	{% endif %}
+
+	{% if 'secadora' in postperson.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-tint-slash fa-2x"></i>
+				    
+				  </span>
+				  <h6>Secadora</h6>
+	</div>
+	{% endif %}
+
+	{% if 'directo' in postperson.amenities %}
+	<div class="card bg2 mx-2 my-2 py-2 col-3 col-md-2">
+		<span class="form-check-label">
+				    <i class="fas fa-handshake fa-2x"></i>
+				    
+				  </span>
+				  <h6>Trato Directo</h6>
+	</div>
+	{% endif %}
+
+	
+</div>
+</article>
+</div>
+</section>
+
+<br>
+
+
+<script>
+	var map = L.map('map').setView([{{postperson.latitud}},{{postperson.longitud}}], 12);
+	var grupoMarcadores = L.layerGroup().addTo(map);
+	
+
+	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	}).addTo(map);
+
+	L.marker([{{postperson.latitud}},{{postperson.longitud}}]).addTo(map);
+</script>
+{% endblock %}

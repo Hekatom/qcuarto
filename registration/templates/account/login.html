@@ -1,0 +1,76 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load account socialaccount %}
+{% block title %}Iniciar sesión{% endblock %}
+{% block content %}
+
+{% get_providers as socialaccount_providers %}
+
+
+
+<div class="card offset-md-4 col-md-4 mt-5 bg2">
+<article class="card-body">
+	<a href="{% url 'account_signup' %}" class="float-right btn btn-outline-primary">Crea tu cuenta <i class="fas fa-user-plus"></i> </a>
+	<h4 class="card-title mb-4 mt-1">Log In</h4>
+    {% if form.errors %}
+        <font color="red">Usuario o contraseña incorrectos, prueba de nuevo.</font>
+        <hr>
+    {% endif %}
+	<p>
+		<a href="{% provider_login_url "facebook" method="oauth2" %}" class="btn btn-block btn-facebook"> <i class="fab fa-facebook-f"></i> &nbsp; Login via Facebook</a>
+		<!-- <a href="" class="btn btn-block btn-danger"> <i class="fab fa-google"></i> &nbsp; Login via Google</a> -->
+	</p>
+	<hr>
+	<h3 class="text-center">Ó...</h3>
+	<hr>
+
+
+<form class="login" method="POST" action="{% url 'account_login' %}">
+    {% csrf_token %}
+    <p>Nombre de Usuario ó correo electrónico:</p>
+    <div class="form-group input-icon">
+        
+    	{# <i class="fa fa-envelope"></i> #}
+        <i class="fa fa-user"></i>
+        {{form.login}}
+        {# <input name="username" class="form-control" placeholder="Email" type="username"> #}
+    </div> <!-- form-group// -->
+<br>
+
+    <p>Contraseña:</p>
+    <div class="form-group input-icon">
+    	<i class="fa fa-lock"></i> 
+        {{form.password}}
+        {# <input name="password" class="form-control" placeholder="Contraseña" type="password"> #}
+    </div> <!-- form-group// -->   
+    
+    <div class="form-group input-icon">
+     <p class="small"> Recuérdame
+     {{form.remember}} </p>
+     </div>
+
+    {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <button class="btn-primary" type="submit">Iniciar sesión </button>
+            </div> <!-- form-group// -->
+        </div>
+		
+        <div class="col-md-6 text-right">
+            <a class="small secondaryAction" href="{% url 'account_reset_password' %}">¿Olvidaste tu contraseña?</a>
+        </div>                                            
+    </div> <!-- .row// -->                                                                  
+</form>
+</article>
+</div> <!-- card.// -->
+
+{% endblock %}
+
+
+

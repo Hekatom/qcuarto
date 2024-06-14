@@ -1,0 +1,77 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Mis búsquedas{% endblock %}
+{% block content %}
+
+
+<!-- Cada Anuncio-->
+
+<div class="container-fluid">
+	<div class="row">
+		<a type="button" href="{% url 'seen_person' %}" class="mx-1 col-5 col-md-3 btn btn-info btn-sm text-center text-uppercase">Búsquedas publicadas</a>
+		<a type="button" href="{% url 'seen_room' %}"  class="mx-1 col-5 col-md-3 btn btn-outline-info btn-sm text-center text-uppercase">Cuartos publicados</a>
+	</div>
+</div>
+
+<br>
+<div class="container-fluid">
+	<div class="row">
+        {% if view.my_persons|length == 0 %}
+            <h2>No has publicado ningún cuarto aún, pero puedes hacerlo 
+                <a href="{% url 'person_submit' %}" class="btn btn-primary px-1 py-1">aquí</a>
+            .</h2>
+        {% else %}
+        {% for person in view.my_persons %}
+			<!-- UN RESULTADO PARA SITIO-->
+        <div class="card col-12 px-2 py-4 col-md-4 bg2">
+		<div class="container card">
+			<div class="card col-12">
+                <a href="{% url 'person' person.id person.name|slugify %}">
+
+                <!-- IMAGEN -->
+                {% if person.image  %}
+                <div class=" col-12">
+                    <img src="{{person.image.url}}" class="img-fluid" alt="Qcuarto-{{person.title}}">
+                </div>
+                {% else %}
+                <div class=" col-12">
+                    <img src="{% static 'core/img/posts/posts_default.png'%}" class="img-fluid" alt="Qcuarto-Publicacion">
+                </div>
+                {% endif %}
+       
+                <!-- TÍTULO -->
+                <h5 class="card-title">
+                    {{person.name}}
+                </h5>
+                </a>
+
+                <div class="card-body">
+
+                    <!-- PRECIO -->
+                    <div class="row">
+                        <h4 class="card-title col-6">${{person.price}}</h4>
+                    </div>
+
+
+                    <!-- VISITAS E INTENTOS DE CONTACTO -->
+                    <div class="rating-wrap ">
+                        <div class="label-rating badge-success rounded">{{person.visits}} vistas</div>
+                        <div class="label-rating badge-success rounded">{{person.contacts}} contacto</div>
+                    </div>
+        
+            </div><!-- card body -->
+
+		</div>  <!-- card resultado -->	
+    </div> <!-- container card -->
+
+    {% for view in person.seen_by.all %}
+    <p>Visto por <a href="{% url 'person_removeseen' userid=view.id personid=person.id%}" class="btn btn-secondary">{{view}}</a></p>
+    {% endfor %}
+
+    </div> <!-- card -->
+     
+        {% endfor %}
+        {% endif %}
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Iniciar sesión{% endblock %}
+{% block content %}
+
+
+
+<h1 class="offset-1">Eliminar Cuenta</h1>
+
+<h3 class="offset-1">¿Estás seguro de querer eliminar tu cuenta?</h3>
+
+<h3 class="offset-1">Esta acción es <b>permanente e irreversible</b>, todos tus datos serán borrados de nuestros servidores pemanenetemente, aunque tendrás que desactivar el registro de Qcuarto directamente con el proveedor que elegiste al inciar sesión (por ejemplo, Google).</h3>
+
+<h3 class="offset-1">De nuevo, <b>todas las publicaciones, imágenes, mensajes o datos</b> relacionados a tu cuenta serán irrecuperables una vez elimines tu cuenta</h3>
+<br>
+<form method="post">
+  {% csrf_token %}
+
+  <button type="submit" class="btn btn-danger offset-5 col-2" onclick="funcionConfirmar()"> Eliminar Cuenta </button>
+
+</form>
+
+<script>
+
+    function funcionConfirmar(){
+        if (confirm('Esta es la última advertencia, ¿realmente deseas eliminar tu cuenta y todos los datos relacionados a ella?')) {
+            window.location.href = '{% url 'account_delete' userid=user.id %}';
+          } else {
+            // Do nothing!
+            console.log('Thing was not saved to the database.');
+          }
+    
+    }
+    
+    </script>
+
+{% endblock %}
+
+
+

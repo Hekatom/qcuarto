@@ -1,0 +1,119 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Contacto Qcuarto{% endblock %}
+{% block content %}
+
+
+<div class="card">
+<article class="card-body col-8 mx-auto" >
+	<h4 class="card-title mt-3 text-center">Contáctanos</h4>
+	<p class="text-center">Responderemos en menos de una semana</p>
+	
+	
+<form method="POST" action="">
+  {% csrf_token %}
+
+	<h5> Nombre completo </h5>
+	<div class="form-group input-group">
+		{% if form.name.errors %} 
+			<div class="card border-danger mb-3" style="max-width: 18rem;">
+  				<div class="card-body text-danger">
+    				<h5 class="card-title">{{ form.name.errors }}</h5>
+				</div>	
+			</div>
+		{% endif %}
+		<div class="input-group-prepend">
+		    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+		 </div>
+			{{ form.name }}
+        {# <input name="" class="form-control" placeholder="Nombre completo" type="text"> #}
+    </div> <!-- form-group// -->
+	<hr>
+
+	<h5> Direccion de correo electrónico </h5>
+    <div class="form-group input-group">
+		{% if form.email.errors %} 
+			<div class="card border-danger mb-3" style="max-width: 18rem;">
+  				<div class="card-body text-danger">
+    				<h5 class="card-title">{{ form.email.errors }}</h5>
+				</div>	
+			</div>
+		{% endif %}
+    	<div class="input-group-prepend">
+		    <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+		 </div>
+		 {{ form.email }}
+        {# <input name="" class="form-control" placeholder="Dirección de correo electrónico" type="email"> #}
+    </div> <!-- form-group// -->
+	<hr>
+
+	<h5> Número telefónico </h5>
+    <div class="form-group input-group">
+		{% if form.phone.errors %} 
+			<div class="card border-danger mb-3" style="max-width: 18rem;">
+  				<div class="card-body text-danger">
+    				<h5 class="card-title">{{ form.phone.errors }}</h5>
+				</div>	
+			</div>
+		{% endif %}
+
+    	<div class="input-group-prepend">
+		    <span class="input-group-text"> <i class="fa fa-phone"></i> </span>
+		</div>
+		{{form.phone}}
+    </div> <!-- form-group// -->
+	<hr>
+
+	<h5> Causa de contacto </h5>
+    <div class="form-group input-group">
+		{% if form.contact_reason.errors %} 
+			<div class="card border-danger mb-3" style="max-width: 18rem;">
+  				<div class="card-body text-danger">
+    				<h5 class="card-title">{{ form.contact_reason.errors }}</h5>
+				</div>	
+			</div>
+		{% endif %}
+    	<div class="input-group-prepend">
+		    <span class="input-group-text"> <i class="fa fa-list"></i> </span>
+		</div>
+		{{form.contact_reason}}
+
+		<!--<select class="form-control">
+			<option selected="">Seleccione razón de contacto</option>
+			<option>Problema con pago o suscripción</option>
+			<option>Problemas con mi cuenta / Acceso a mi cuenta</option>
+			<option>Bolsa de trabajo</option>
+			<option>Otro</option>
+		</select> -->
+	</div> <!-- form-group end.// -->
+	<hr>
+
+	<h5> Descripción </h5>
+    <div class="form-group input-group">
+		{% if form.description.errors %} 
+			<div class="card border-danger mb-3" style="max-width: 18rem;">
+  				<div class="card-body text-danger">
+    				<h5 class="card-title">{{ form.description.errors }}</h5>
+				</div>	
+			</div>
+		{% endif %}
+
+    	<div class="input-group-prepend">
+		    <span class="input-group-text"> <i class="fa fa-pen-square"></i> </span>
+		</div>
+		{{ form.description }}
+        {# <input class="form-control placeholder-large" placeholder="De una descripción de su causa de contacto" type="text"> #}
+    </div> <!-- form-group// --> 
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-warning btn-block col-8 offset-2 py-3"> Registrar contacto</button>
+	</div> <!-- form-group// -->                                                                                                      
+</form>
+
+
+
+</article>
+</div> <!-- card.// -->
+
+
+{% endblock %}

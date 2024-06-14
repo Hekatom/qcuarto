@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Encuentra!{% endblock %}
+{% block content %}
+
+
+
+<!-- RESULTADOS PARA ANUNCIOS-->
+
+<div class="container-fluid">
+	<div class="row">
+
+		
+		<div class="col-6 col-md-4">
+		<a href="{% url 'find_room' %}" class="stretched-link">
+    	<div class="card bg2">
+			<div class="card-body">
+       			<h2 class="card-title">Encuentra cuarto</h2>
+				
+      		</div>
+      		<img src="{% static 'search/room_search.jpg' %}" class="card-img-top img-responsive" alt="Qcuarto cuarto busqueda">
+    	</div>
+		</a>
+  		</div>
+
+		<div class="col-6 col-md-4">
+		<a href="{% url 'find_person' %}" class="stretched-link">
+    	<div class="card bg2">
+			<div class="card-body">
+       			<h2 class="card-title">Encuentra roomie</h2>
+				
+      		</div>
+      		<img src="{% static 'search/person_search.jpg' %}" class="card-img-top img-responsive" alt="Qcuarto cuarto busqueda">
+    	</div>
+		</a>
+  		</div>
+
+	</div>
+
+</div>
+
+<br>
+
+{% endblock %}
